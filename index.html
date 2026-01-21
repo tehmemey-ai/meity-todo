@@ -60,18 +60,51 @@
             font-weight: 900; 
         }
 
+        /* WELCOME BOX UPGRADED VERSION */
         .welcome-box {
-            background: var(--pink-soft);
-            padding: 18px;
-            border-radius: 25px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255, 133, 162, 0.2);
+            background: linear-gradient(to bottom right, #fff0f3, #ffffff);
+            padding: 25px;
+            border-radius: 30px;
+            margin-bottom: 25px;
+            border: 1.5px solid rgba(255, 133, 162, 0.15);
             position: relative;
+            box-shadow: 0 10px 20px rgba(255, 133, 162, 0.05);
         }
 
-        .welcome-box h2 { color: var(--pink-main); font-size: 17px; margin-bottom: 5px; }
-        .welcome-box p { font-size: 13px; color: #666; line-height: 1.5; }
-        .welcome-box .emoji { position: absolute; right: 15px; top: 15px; font-size: 20px; }
+        .welcome-box h2 { 
+            color: var(--pink-main); 
+            font-size: 19px; 
+            margin-bottom: 8px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        
+        .welcome-box p { 
+            font-size: 13.5px; 
+            color: #5a5a5a; 
+            line-height: 1.6; 
+            font-weight: 500;
+        }
+
+        .quote-divider {
+            height: 2px;
+            width: 40px;
+            background: var(--pink-gradient);
+            margin: 12px 0;
+            border-radius: 2px;
+        }
+
+        #quote-text { 
+            font-size: 12.5px; 
+            color: #888; 
+            line-height: 1.5; 
+            font-style: italic;
+            animation: fadeInQuote 1s ease-out;
+        }
+
+        @keyframes fadeInQuote { from { opacity: 0; } to { opacity: 1; } }
+
+        .emoji-float { position: absolute; right: 25px; top: 22px; font-size: 24px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1)); }
 
         .input-group { 
             background: white;
@@ -91,7 +124,9 @@
             outline: none; 
             background: #fffafa;
             font-size: 14px;
+            transition: 0.3s;
         }
+        input:focus { border-color: var(--pink-main); box-shadow: 0 0 10px rgba(255, 133, 162, 0.1); }
 
         .btn-add { 
             background: var(--pink-gradient); 
@@ -122,8 +157,7 @@
         .task-date { font-size: 11px; color: var(--pink-main); font-weight: 700; margin-top: 2px; }
 
         .actions { display: flex; gap: 5px; }
-        .btn-icon { width: 32px; height: 32px; border: none; border-radius: 10px; cursor: pointer; background: #fafafa; transition: 0.2s; }
-        .btn-icon:hover { background: var(--pink-soft); color: var(--pink-main); }
+        .btn-icon { width: 32px; height: 32px; border: none; border-radius: 10px; cursor: pointer; background: #fafafa; }
         
         .cloud-status {
             text-align: center;
@@ -138,24 +172,26 @@
 
 <div class="container">
     <header>
-        <div class="app-badge">Firebase Protected ☁️</div>
+        <div class="app-badge">Cloud Dashboard ✨</div>
         <h1>Todo Pro App</h1>
     </header>
 
     <div class="welcome-box">
-        <span class="emoji">🌸</span>
+        <span class="emoji-float">🌸</span>
         <h2>Hi Meity! ✨</h2>
-        <p>Dashboard ini sudah sinkron ke Cloud. Share your list, make your life more organize! 🎀</p>
+        <p>Share your list & make your life more organized.</p>
+        <div class="quote-divider"></div>
+        <div id="quote-text">Today's Quote: Loading...</div>
     </div>
     
     <div class="input-group">
-        <input type="text" id="taskInput" placeholder="Catat tugas hari ini...">
+        <input type="text" id="taskInput" placeholder="Apa rencana hebatmu hari ini?">
         <input type="date" id="dateInput">
         <button class="btn-add" id="addBtn">Simpan ke Cloud 🎀</button>
     </div>
 
     <div id="taskList"></div>
-    <div class="cloud-status">● Live Sync Active</div>
+    <div class="cloud-status">● Live Cloud Sync Active</div>
 </div>
 
 <script type="module">
@@ -176,49 +212,59 @@
     const db = getFirestore(app);
     const tasksCol = collection(db, "todo_meity");
 
-    const taskInput = document.getElementById('taskInput');
-    const dateInput = document.getElementById('dateInput');
+    const quotes = [
+        "Your daily dose of magic. Let's shine! ✨",
+        "Small steps every day lead to big results. 🌸",
+        "Make today amazing, just like you! 🌷",
+        "One step at a time, you've got this! 🎀",
+        "Dream it, plan it, do it. ☁️",
+        "Organize your life, organize your mind. ✨",
+        "A fresh start every morning. 🌤️",
+        "Be productive, be happy! 🚀",
+        "Focus on the good. 🌸",
+        "Turn your 'to-do' into 'done'! 🎀"
+    ];
+
+    function showRandomQuote() {
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        document.getElementById('quote-text').innerText = "Today's Quote: " + quotes[randomIndex];
+    }
+
+    showRandomQuote();
+    document.getElementById('dateInput').valueAsDate = new Date();
+
     const addBtn = document.getElementById('addBtn');
-    const taskList = document.getElementById('taskList');
-
-    dateInput.valueAsDate = new Date();
-
     addBtn.addEventListener('click', async () => {
-        const text = taskInput.value.trim();
-        const date = dateInput.value;
+        const textInput = document.getElementById('taskInput');
+        const text = textInput.value.trim();
+        const date = document.getElementById('dateInput').value;
         if (text && date) {
-            try {
-                await addDoc(tasksCol, {
-                    text: text,
-                    date: date,
-                    createdAt: Date.now()
-                });
-                taskInput.value = '';
-            } catch (e) { alert("Error: Cek Firestore Rules kamu!"); }
+            await addDoc(tasksCol, { text, date, createdAt: Date.now() });
+            textInput.value = '';
         }
     });
 
     const q = query(tasksCol, orderBy("createdAt", "desc"));
     onSnapshot(q, (snapshot) => {
+        const taskList = document.getElementById('taskList');
         taskList.innerHTML = '';
-        snapshot.forEach((doc) => { renderTask(doc.id, doc.data()); });
+        snapshot.forEach((doc) => {
+            const task = doc.data();
+            const card = document.createElement('div');
+            card.className = 'task-card';
+            card.innerHTML = `
+                <div class="task-info">
+                    <div class="task-title">${task.text}</div>
+                    <div class="task-date">📅 ${task.date}</div>
+                </div>
+                <div class="actions">
+                    <button class="btn-icon" onclick="editTask('${doc.id}', '${task.text}', '${task.date}')">✏️</button>
+                    <button class="btn-icon" onclick="deleteTask('${doc.id}')">🗑️</button>
+                </div>
+            `;
+            taskList.appendChild(card);
+        });
     });
-
-    function renderTask(id, task) {
-        const card = document.createElement('div');
-        card.className = 'task-card';
-        card.innerHTML = `
-            <div class="task-info">
-                <div class="task-title">${task.text}</div>
-                <div class="task-date">📅 ${task.date}</div>
-            </div>
-            <div class="actions">
-                <button class="btn-icon" onclick="editTask('${id}', '${task.text}', '${task.date}')">✏️</button>
-                <button class="btn-icon" onclick="deleteTask('${id}')">🗑️</button>
-            </div>
-        `;
-        taskList.appendChild(card);
-    }
 
     window.deleteTask = async (id) => {
         if(confirm('Hapus dari Cloud?')) await deleteDoc(doc(db, "todo_meity", id));
