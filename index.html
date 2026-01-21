@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo Pro Meity ✨</title>
+    
+    <link rel="icon" href="https://img.icons8.com/fluency/48/cherry-blossoms.png">
+    <link rel="apple-touch-icon" href="https://img.icons8.com/fluency/144/cherry-blossoms.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pink-main: #ff85a2;
+            --pink-gradient: linear-gradient(135deg, #ff85a2 0%, #ffacbd 100%);
+            --pink-soft: #fff0f3;
+            --text-dark: #4a4a4a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
+
+        body { 
+            background: linear-gradient(135deg, #fbb1bd 0%, #ffeaee 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px 15px;
+        }
+
+        .container { 
+            width: 100%;
+            max-width: 480px; 
+            background: rgba(255, 255, 255, 0.95); 
+            backdrop-filter: blur(10px);
+            padding: 25px; 
+            border-radius: 40px; 
+            box-shadow: 0 25px 50px rgba(255, 133, 162, 0.3); 
+            border: 1px solid white;
+        }
+
+        header { text-align: center; margin-bottom: 20px; }
+        .app-badge {
+            display: inline-block;
+            background: var(--pink-gradient);
+            color: white;
+            padding: 6px 15px;
+            border-radius: 50px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        header h1 { 
+            font-size: 28px; 
+            background: var(--pink-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900; 
+        }
+
+        .welcome-box {
+            background: var(--pink-soft);
+            padding: 18px;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 133, 162, 0.2);
+            position: relative;
+        }
+
+        .welcome-box h2 { color: var(--pink-main); font-size: 17px; margin-bottom: 5px; }
+        .welcome-box p { font-size: 13px; color: #666; line-height: 1.5; }
+        .welcome-box .emoji { position: absolute; right: 15px; top: 15px; font-size: 20px; }
+
+        .input-group { 
+            background: white;
+            padding: 15px;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+        }
+
+        input { 
+            padding: 12px; 
+            border: 2px solid #fdf2f4; 
+            border-radius: 15px; 
+            outline: none; 
+            background: #fffafa;
+            font-size: 14px;
+        }
+
+        .btn-add { 
+            background: var(--pink-gradient); 
+            color: white; 
+            border: none;
+            padding: 14px;
+            border-radius: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(255, 133, 162, 0.2);
+        }
+
+        #taskList { display: flex; flex-direction: column; gap: 10px; }
+
+        .task-card { 
+            background: white; 
+            padding: 15px; 
+            border-radius: 20px; 
+            display: flex; 
+            align-items: center; 
+            gap: 12px;
+            border: 1px solid #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+        }
+
+        .task-info { flex: 1; }
+        .task-title { font-weight: 700; color: var(--text-dark); font-size: 14px; }
+        .task-date { font-size: 11px; color: var(--pink-main); font-weight: 700; margin-top: 2px; }
+
+        .actions { display: flex; gap: 5px; }
+        .btn-icon { width: 32px; height: 32px; border: none; border-radius: 10px; cursor: pointer; background: #fafafa; transition: 0.2s; }
+        .btn-icon:hover { background: var(--pink-soft); color: var(--pink-main); }
+        
+        .cloud-status {
+            text-align: center;
+            font-size: 10px;
+            color: #ffb1bd;
+            margin-top: 20px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="app-badge">Firebase Protected ☁️</div>
+        <h1>Todo Pro App</h1>
+    </header>
+
+    <div class="welcome-box">
+        <span class="emoji">🌸</span>
+        <h2>Hi Meity! ✨</h2>
+        <p>Dashboard ini sudah sinkron ke Cloud. Share your list, make your life more organize! 🎀</p>
+    </div>
+    
+    <div class="input-group">
+        <input type="text" id="taskInput" placeholder="Catat tugas hari ini...">
+        <input type="date" id="dateInput">
+        <button class="btn-add" id="addBtn">Simpan ke Cloud 🎀</button>
+    </div>
+
+    <div id="taskList"></div>
+    <div class="cloud-status">● Live Sync Active</div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBWeo6KAo6GsKHusxDGJB8kp_03-jB944w",
+        authDomain: "meitytodopro.firebaseapp.com",
+        projectId: "meitytodopro",
+        storageBucket: "meitytodopro.firebasestorage.app",
+        messagingSenderId: "820068449861",
+        appId: "1:820068449861:web:1ce45248eb06c8714cad2c",
+        measurementId: "G-SJM9WPX9JF"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const tasksCol = collection(db, "todo_meity");
+
+    const taskInput = document.getElementById('taskInput');
+    const dateInput = document.getElementById('dateInput');
+    const addBtn = document.getElementById('addBtn');
+    const taskList = document.getElementById('taskList');
+
+    dateInput.valueAsDate = new Date();
+
+    addBtn.addEventListener('click', async () => {
+        const text = taskInput.value.trim();
+        const date = dateInput.value;
+        if (text && date) {
+            try {
+                await addDoc(tasksCol, {
+                    text: text,
+                    date: date,
+                    createdAt: Date.now()
+                });
+                taskInput.value = '';
+            } catch (e) { alert("Error: Cek Firestore Rules kamu!"); }
+        }
+    });
+
+    const q = query(tasksCol, orderBy("createdAt", "desc"));
+    onSnapshot(q, (snapshot) => {
+        taskList.innerHTML = '';
+        snapshot.forEach((doc) => { renderTask(doc.id, doc.data()); });
+    });
+
+    function renderTask(id, task) {
+        const card = document.createElement('div');
+        card.className = 'task-card';
+        card.innerHTML = `
+            <div class="task-info">
+                <div class="task-title">${task.text}</div>
+                <div class="task-date">📅 ${task.date}</div>
+            </div>
+            <div class="actions">
+                <button class="btn-icon" onclick="editTask('${id}', '${task.text}', '${task.date}')">✏️</button>
+                <button class="btn-icon" onclick="deleteTask('${id}')">🗑️</button>
+            </div>
+        `;
+        taskList.appendChild(card);
+    }
+
+    window.deleteTask = async (id) => {
+        if(confirm('Hapus dari Cloud?')) await deleteDoc(doc(db, "todo_meity", id));
+    };
+
+    window.editTask = async (id, oldText, oldDate) => {
+        const newText = prompt("Ubah tugas:", oldText);
+        const newDate = prompt("Ubah tanggal:", oldDate);
+        if (newText && newDate) {
+            await updateDoc(doc(db, "todo_meity", id), { text: newText, date: newDate });
+        }
+    };
+</script>
+</body>
+</html>
