@@ -15,7 +15,6 @@
             --pink-gradient: linear-gradient(135deg, #ff85a2 0%, #ffacbd 100%);
             --pink-soft: #fff0f3;
             --text-dark: #4a4a4a;
-            --success: #63d471;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
@@ -29,7 +28,7 @@
 
         .container { 
             width: 100%; max-width: 480px; 
-            background: rgba(255, 255, 255, 0.9); 
+            background: rgba(255, 255, 255, 0.92); 
             backdrop-filter: blur(15px);
             padding: 25px; border-radius: 40px; 
             box-shadow: 0 25px 50px rgba(255, 133, 162, 0.3); 
@@ -37,12 +36,6 @@
         }
 
         header { text-align: center; margin-bottom: 20px; }
-        .app-badge {
-            display: inline-block; background: var(--pink-gradient); color: white;
-            padding: 6px 15px; border-radius: 50px; font-size: 10px;
-            font-weight: 800; text-transform: uppercase; margin-bottom: 8px;
-        }
-
         header h1 { 
             font-size: 28px; background: var(--pink-gradient);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
@@ -51,12 +44,10 @@
 
         .welcome-box {
             background: white; padding: 20px; border-radius: 30px; margin-bottom: 20px;
-            border: 1.5px solid rgba(255, 133, 162, 0.1); position: relative;
+            border: 1.5px solid rgba(255, 133, 162, 0.1);
         }
         .welcome-box h2 { color: var(--pink-main); font-size: 18px; margin-bottom: 5px; }
-        .welcome-box p { font-size: 12px; color: #888; font-style: italic; }
-
-        /* PROGRESS SECTION */
+        
         .progress-container { margin-top: 15px; }
         .progress-label { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; margin-bottom: 5px; color: var(--pink-main); }
         .progress-bar { width: 100%; height: 8px; background: var(--pink-soft); border-radius: 10px; overflow: hidden; }
@@ -67,11 +58,10 @@
         }
         .agenda-card {
             background: white; padding: 15px; border-radius: 25px; text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.02); border: 1px solid #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02); border: 1.5px solid #fff;
         }
-        .agenda-card span { display: block; }
-        .val { font-size: 22px; font-weight: 900; color: var(--pink-main); }
-        .lbl { font-size: 10px; font-weight: 700; color: #aaa; text-transform: uppercase; margin-top: 2px; }
+        .val { font-size: 22px; font-weight: 900; color: var(--pink-main); display: block; }
+        .lbl { font-size: 10px; font-weight: 700; color: #aaa; text-transform: uppercase; }
 
         .input-group { 
             background: white; padding: 15px; border-radius: 25px;
@@ -80,40 +70,39 @@
         }
         input { 
             padding: 12px; border: 2px solid #fdf2f4; border-radius: 15px; 
-            outline: none; background: #fffafa; font-size: 14px; transition: 0.3s;
+            outline: none; background: #fffafa; font-size: 14px;
         }
-        input:focus { border-color: var(--pink-main); }
         .btn-add { 
             background: var(--pink-gradient); color: white; border: none;
             padding: 14px; border-radius: 15px; font-weight: 800; cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255, 133, 162, 0.3); transition: 0.3s;
         }
-        .btn-add:active { transform: scale(0.95); }
 
         #taskList { display: flex; flex-direction: column; gap: 10px; }
 
         .task-card { 
             background: white; padding: 15px; border-radius: 22px; 
-            display: flex; align-items: center; gap: 15px;
+            display: flex; align-items: center; gap: 12px;
             border: 1px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.02);
-            transition: 0.3s; cursor: pointer;
+            transition: 0.3s;
         }
-        .task-card.completed { opacity: 0.6; background: #f9f9f9; }
+        .task-card.is-today { border: 1.5px solid #ffacbd; background: #fffcfd; }
+        .task-card.completed { opacity: 0.6; }
         .task-card.completed .task-title { text-decoration: line-through; color: #aaa; }
 
         .check-circle { 
             width: 24px; height: 24px; border: 2px solid var(--pink-soft); 
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            color: transparent; transition: 0.3s;
+            cursor: pointer; transition: 0.3s; color: transparent;
         }
         .completed .check-circle { background: var(--pink-main); border-color: var(--pink-main); color: white; font-size: 12px; }
 
-        .task-info { flex: 1; }
-        .task-title { font-weight: 700; font-size: 14px; transition: 0.3s; }
-        .task-date { font-size: 11px; color: var(--pink-main); font-weight: 700; margin-top: 2px; }
+        .task-info { flex: 1; cursor: pointer; }
+        .task-title { font-weight: 700; font-size: 14px; }
+        .task-date { font-size: 11px; color: var(--pink-main); font-weight: 700; }
+        .today-badge { background: var(--pink-main); color: white; font-size: 8px; padding: 2px 6px; border-radius: 5px; margin-left: 5px; vertical-align: middle; font-weight: 900; }
 
         .actions { display: flex; gap: 5px; }
-        .btn-icon { width: 32px; height: 32px; border: none; border-radius: 10px; cursor: pointer; background: #fafafa; font-size: 14px; }
+        .btn-icon { width: 32px; height: 32px; border: none; border-radius: 10px; cursor: pointer; background: #fafafa; }
         
         .cloud-status { text-align: center; font-size: 10px; color: #ffb1bd; margin-top: 25px; font-weight: 700; }
     </style>
@@ -122,34 +111,23 @@
 
 <div class="container">
     <header>
-        <div class="app-badge">Ultimate Edition 💎</div>
+        <div class="app-badge">Ultimate Edition ✨</div>
         <h1>Todo Pro App</h1>
     </header>
 
     <div class="welcome-box">
-        <h2 id="greeting">Halo, Meity! ✨</h2>
-        <p id="quote-text">Share your list & make your life more organized.</p>
+        <h2 id="greeting">Halo, Meity!</h2>
+        <p>Share your list & make your life more organized.</p>
         
         <div class="progress-container">
-            <div class="progress-label">
-                <span>Task Progress</span>
-                <span id="progress-percent">0%</span>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progress-fill"></div>
-            </div>
+            <div class="progress-label"><span>Task Progress</span> <span id="progress-percent">0%</span></div>
+            <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
         </div>
     </div>
 
     <div class="agenda-grid">
-        <div class="agenda-card">
-            <span class="val" id="count-today">0</span>
-            <span class="lbl">Hari Ini</span>
-        </div>
-        <div class="agenda-card">
-            <span class="val" id="count-total">0</span>
-            <span class="lbl">Total Task</span>
-        </div>
+        <div class="agenda-card"><span class="val" id="count-today">0</span><span class="lbl">Hari Ini</span></div>
+        <div class="agenda-card"><span class="val" id="count-total">0</span><span class="lbl">Total Task</span></div>
     </div>
     
     <div class="input-group">
@@ -180,28 +158,26 @@
     const db = getFirestore(app);
     const tasksCol = collection(db, "todo_meity");
 
-    // Dynamic Greeting
     const hr = new Date().getHours();
-    const greetText = hr < 12 ? "Selamat Pagi, Meity! ☀️" : hr < 15 ? "Selamat Siang, Meity! ☁️" : hr < 18 ? "Selamat Sore, Meity! 🌸" : "Selamat Malam, Meity! ✨";
-    document.getElementById('greeting').innerText = greetText;
+    document.getElementById('greeting').innerText = hr < 12 ? "Pagi, Meity! ☀️" : hr < 15 ? "Siang, Meity! ☁️" : hr < 18 ? "Sore, Meity! 🌸" : "Malam, Meity! ✨";
 
-    const taskInput = document.getElementById('taskInput');
     const dateInput = document.getElementById('dateInput');
-    const addBtn = document.getElementById('addBtn');
-    const taskList = document.getElementById('taskList');
     dateInput.valueAsDate = new Date();
 
+    const addBtn = document.getElementById('addBtn');
     addBtn.addEventListener('click', async () => {
-        const text = taskInput.value.trim();
+        const textInput = document.getElementById('taskInput');
+        const text = textInput.value.trim();
         const date = dateInput.value;
         if (text && date) {
             await addDoc(tasksCol, { text, date, completed: false, createdAt: Date.now() });
-            taskInput.value = '';
+            textInput.value = '';
         }
     });
 
     const q = query(tasksCol, orderBy("createdAt", "desc"));
     onSnapshot(q, (snapshot) => {
+        const taskList = document.getElementById('taskList');
         taskList.innerHTML = '';
         let total = 0, today = 0, done = 0;
         const todayStr = new Date().toISOString().split('T')[0];
@@ -210,25 +186,26 @@
             const task = docSnap.data();
             const id = docSnap.id;
             total++;
-            if(task.date === todayStr) today++;
+            const isToday = task.date === todayStr;
+            if(isToday && !task.completed) today++;
             if(task.completed) done++;
 
             const card = document.createElement('div');
-            card.className = `task-card ${task.completed ? 'completed' : ''}`;
+            card.className = `task-card ${task.completed ? 'completed' : ''} ${isToday ? 'is-today' : ''}`;
             card.innerHTML = `
                 <div class="check-circle" onclick="toggleTask('${id}', ${task.completed}); event.stopPropagation();">✔</div>
                 <div class="task-info" onclick="toggleTask('${id}', ${task.completed})">
-                    <div class="task-title">${task.text}</div>
+                    <div class="task-title">${task.text}${isToday ? '<span class="today-badge">HARI INI</span>' : ''}</div>
                     <div class="task-date">📅 ${task.date}</div>
                 </div>
                 <div class="actions">
+                    <button class="btn-icon" onclick="editTask('${id}', '${task.text}', '${task.date}'); event.stopPropagation();">✏️</button>
                     <button class="btn-icon" onclick="deleteTask('${id}'); event.stopPropagation();">🗑️</button>
                 </div>
             `;
             taskList.appendChild(card);
         });
 
-        // Update Stats
         document.getElementById('count-total').innerText = total;
         document.getElementById('count-today').innerText = today;
         const percent = total > 0 ? Math.round((done / total) * 100) : 0;
@@ -241,7 +218,15 @@
     };
 
     window.deleteTask = async (id) => {
-        if(confirm('Hapus tugas ini dari cloud?')) await deleteDoc(doc(db, "todo_meity", id));
+        if(confirm('Hapus tugas ini?')) await deleteDoc(doc(db, "todo_meity", id));
+    };
+
+    window.editTask = async (id, oldText, oldDate) => {
+        const newText = prompt("Ubah tugas:", oldText);
+        const newDate = prompt("Ubah tanggal:", oldDate);
+        if (newText && newDate) {
+            await updateDoc(doc(db, "todo_meity", id), { text: newText, date: newDate });
+        }
     };
 </script>
 </body>
