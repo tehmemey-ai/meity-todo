@@ -41,116 +41,67 @@
 
         header { text-align: center; margin-bottom: 20px; }
         .app-badge {
-            display: inline-block;
-            background: var(--pink-gradient);
-            color: white;
-            padding: 6px 15px;
-            border-radius: 50px;
-            font-size: 10px;
-            font-weight: 800;
-            text-transform: uppercase;
-            margin-bottom: 8px;
+            display: inline-block; background: var(--pink-gradient); color: white;
+            padding: 6px 15px; border-radius: 50px; font-size: 10px;
+            font-weight: 800; text-transform: uppercase; margin-bottom: 8px;
         }
 
         header h1 { 
-            font-size: 28px; 
-            background: var(--pink-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 28px; background: var(--pink-gradient);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             font-weight: 900; 
         }
 
-        /* WELCOME BOX UPGRADED VERSION */
         .welcome-box {
             background: linear-gradient(to bottom right, #fff0f3, #ffffff);
-            padding: 25px;
-            border-radius: 30px;
-            margin-bottom: 25px;
-            border: 1.5px solid rgba(255, 133, 162, 0.15);
-            position: relative;
-            box-shadow: 0 10px 20px rgba(255, 133, 162, 0.05);
+            padding: 25px; border-radius: 30px; margin-bottom: 20px;
+            border: 1.5px solid rgba(255, 133, 162, 0.15); position: relative;
         }
 
-        .welcome-box h2 { 
-            color: var(--pink-main); 
-            font-size: 19px; 
-            margin-bottom: 8px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-        }
-        
-        .welcome-box p { 
-            font-size: 13.5px; 
-            color: #5a5a5a; 
-            line-height: 1.6; 
-            font-weight: 500;
-        }
+        .welcome-box h2 { color: var(--pink-main); font-size: 19px; margin-bottom: 8px; font-weight: 800; }
+        .welcome-box p { font-size: 13.5px; color: #5a5a5a; line-height: 1.6; }
 
-        .quote-divider {
-            height: 2px;
-            width: 40px;
-            background: var(--pink-gradient);
-            margin: 12px 0;
-            border-radius: 2px;
+        /* AGENDA PREVIEW SECTION */
+        .agenda-preview {
+            background: white; border-radius: 25px; padding: 15px;
+            margin-bottom: 20px; border: 2px dashed #ffacbd;
+            display: flex; align-items: center; justify-content: space-around;
         }
-
-        #quote-text { 
-            font-size: 12.5px; 
-            color: #888; 
-            line-height: 1.5; 
-            font-style: italic;
-            animation: fadeInQuote 1s ease-out;
-        }
-
-        @keyframes fadeInQuote { from { opacity: 0; } to { opacity: 1; } }
-
-        .emoji-float { position: absolute; right: 25px; top: 22px; font-size: 24px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1)); }
+        .agenda-item { text-align: center; }
+        .agenda-count { display: block; font-size: 20px; font-weight: 900; color: var(--pink-main); }
+        .agenda-label { font-size: 10px; text-transform: uppercase; font-weight: 700; color: #888; }
 
         .input-group { 
-            background: white;
-            padding: 15px;
-            border-radius: 25px;
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            background: white; padding: 15px; border-radius: 25px;
+            margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.03);
         }
 
         input { 
-            padding: 12px; 
-            border: 2px solid #fdf2f4; 
-            border-radius: 15px; 
-            outline: none; 
-            background: #fffafa;
-            font-size: 14px;
-            transition: 0.3s;
+            padding: 12px; border: 2px solid #fdf2f4; border-radius: 15px; 
+            outline: none; background: #fffafa; font-size: 14px;
         }
-        input:focus { border-color: var(--pink-main); box-shadow: 0 0 10px rgba(255, 133, 162, 0.1); }
 
         .btn-add { 
-            background: var(--pink-gradient); 
-            color: white; 
-            border: none;
-            padding: 14px;
-            border-radius: 15px;
-            font-weight: 800;
-            cursor: pointer;
-            box-shadow: 0 8px 20px rgba(255, 133, 162, 0.2);
+            background: var(--pink-gradient); color: white; border: none;
+            padding: 14px; border-radius: 15px; font-weight: 800; cursor: pointer;
+        }
+
+        .list-title {
+            font-size: 15px; font-weight: 800; color: var(--text-dark);
+            margin: 10px 0 15px 5px; display: flex; align-items: center; gap: 8px;
         }
 
         #taskList { display: flex; flex-direction: column; gap: 10px; }
 
         .task-card { 
-            background: white; 
-            padding: 15px; 
-            border-radius: 20px; 
-            display: flex; 
-            align-items: center; 
-            gap: 12px;
-            border: 1px solid #fff;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+            background: white; padding: 15px; border-radius: 20px; 
+            display: flex; align-items: center; gap: 12px;
+            border: 1px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+            animation: slideIn 0.3s ease-out;
         }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .task-info { flex: 1; }
         .task-title { font-weight: 700; color: var(--text-dark); font-size: 14px; }
@@ -159,13 +110,7 @@
         .actions { display: flex; gap: 5px; }
         .btn-icon { width: 32px; height: 32px; border: none; border-radius: 10px; cursor: pointer; background: #fafafa; }
         
-        .cloud-status {
-            text-align: center;
-            font-size: 10px;
-            color: #ffb1bd;
-            margin-top: 20px;
-            font-weight: 700;
-        }
+        .cloud-status { text-align: center; font-size: 10px; color: #ffb1bd; margin-top: 20px; font-weight: 700; }
     </style>
 </head>
 <body>
@@ -177,19 +122,29 @@
     </header>
 
     <div class="welcome-box">
-        <span class="emoji-float">🌸</span>
         <h2>Hi Meity! ✨</h2>
         <p>Share your list & make your life more organized.</p>
-        <div class="quote-divider"></div>
-        <div id="quote-text">Today's Quote: Loading...</div>
+    </div>
+
+    <div class="agenda-preview">
+        <div class="agenda-item">
+            <span class="agenda-count" id="count-today">0</span>
+            <span class="agenda-label">Hari Ini</span>
+        </div>
+        <div style="width: 1px; height: 30px; background: #eee;"></div>
+        <div class="agenda-item">
+            <span class="agenda-count" id="count-total">0</span>
+            <span class="agenda-label">Total Task</span>
+        </div>
     </div>
     
     <div class="input-group">
-        <input type="text" id="taskInput" placeholder="Apa rencana hebatmu hari ini?">
+        <input type="text" id="taskInput" placeholder="Catat agenda barumu...">
         <input type="date" id="dateInput">
-        <button class="btn-add" id="addBtn">Simpan ke Cloud 🎀</button>
+        <button class="btn-add" id="addBtn">Tambahkan ke Agenda 🎀</button>
     </div>
 
+    <div class="list-title">📋 Daftar Tugas Meity</div>
     <div id="taskList"></div>
     <div class="cloud-status">● Live Cloud Sync Active</div>
 </div>
@@ -212,66 +167,66 @@
     const db = getFirestore(app);
     const tasksCol = collection(db, "todo_meity");
 
-    const quotes = [
-        "Your daily dose of magic. Let's shine! ✨",
-        "Small steps every day lead to big results. 🌸",
-        "Make today amazing, just like you! 🌷",
-        "One step at a time, you've got this! 🎀",
-        "Dream it, plan it, do it. ☁️",
-        "Organize your life, organize your mind. ✨",
-        "A fresh start every morning. 🌤️",
-        "Be productive, be happy! 🚀",
-        "Focus on the good. 🌸",
-        "Turn your 'to-do' into 'done'! 🎀"
-    ];
-
-    function showRandomQuote() {
-        const randomIndex = Math.floor(Math.random() * quotes.length);
-        document.getElementById('quote-text').innerText = "Today's Quote: " + quotes[randomIndex];
-    }
-
-    showRandomQuote();
-    document.getElementById('dateInput').valueAsDate = new Date();
-
+    const taskInput = document.getElementById('taskInput');
+    const dateInput = document.getElementById('dateInput');
     const addBtn = document.getElementById('addBtn');
+    const taskList = document.getElementById('taskList');
+    const countToday = document.getElementById('count-today');
+    const countTotal = document.getElementById('count-total');
+
+    dateInput.valueAsDate = new Date();
+
     addBtn.addEventListener('click', async () => {
-        const textInput = document.getElementById('taskInput');
-        const text = textInput.value.trim();
-        const date = document.getElementById('dateInput').value;
+        const text = taskInput.value.trim();
+        const date = dateInput.value;
         if (text && date) {
             await addDoc(tasksCol, { text, date, createdAt: Date.now() });
-            textInput.value = '';
+            taskInput.value = '';
         }
     });
 
     const q = query(tasksCol, orderBy("createdAt", "desc"));
     onSnapshot(q, (snapshot) => {
-        const taskList = document.getElementById('taskList');
         taskList.innerHTML = '';
+        let total = 0;
+        let todayCount = 0;
+        const todayStr = new Date().toISOString().split('T')[0];
+
         snapshot.forEach((doc) => {
             const task = doc.data();
-            const card = document.createElement('div');
-            card.className = 'task-card';
-            card.innerHTML = `
-                <div class="task-info">
-                    <div class="task-title">${task.text}</div>
-                    <div class="task-date">📅 ${task.date}</div>
-                </div>
-                <div class="actions">
-                    <button class="btn-icon" onclick="editTask('${doc.id}', '${task.text}', '${task.date}')">✏️</button>
-                    <button class="btn-icon" onclick="deleteTask('${doc.id}')">🗑️</button>
-                </div>
-            `;
-            taskList.appendChild(card);
+            total++;
+            if(task.date === todayStr) todayCount++;
+            
+            renderTask(doc.id, task);
         });
+
+        // Update Agenda Preview
+        countTotal.innerText = total;
+        countToday.innerText = todayCount;
     });
 
+    function renderTask(id, task) {
+        const card = document.createElement('div');
+        card.className = 'task-card';
+        card.innerHTML = `
+            <div class="task-info">
+                <div class="task-title">${task.text}</div>
+                <div class="task-date">📅 ${task.date}</div>
+            </div>
+            <div class="actions">
+                <button class="btn-icon" onclick="editTask('${id}', '${task.text}', '${task.date}')">✏️</button>
+                <button class="btn-icon" onclick="deleteTask('${id}')">🗑️</button>
+            </div>
+        `;
+        taskList.appendChild(card);
+    }
+
     window.deleteTask = async (id) => {
-        if(confirm('Hapus dari Cloud?')) await deleteDoc(doc(db, "todo_meity", id));
+        if(confirm('Hapus agenda ini?')) await deleteDoc(doc(db, "todo_meity", id));
     };
 
     window.editTask = async (id, oldText, oldDate) => {
-        const newText = prompt("Ubah tugas:", oldText);
+        const newText = prompt("Ubah agenda:", oldText);
         const newDate = prompt("Ubah tanggal:", oldDate);
         if (newText && newDate) {
             await updateDoc(doc(db, "todo_meity", id), { text: newText, date: newDate });
