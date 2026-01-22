@@ -3,400 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo Pro Meity ✨</title>
-    
-    <link rel="icon" href="https://img.icons8.com/fluency/48/cherry-blossoms.png">
-    <link rel="apple-touch-icon" href="https://img.icons8.com/fluency/144/cherry-blossoms.png">
-    
+    <title>Todo Pro Meity ?</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700;800;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --pink-main: #ff85a2;
-            --pink-gradient: linear-gradient(135deg, #ff85a2 0%, #ffacbd 100%);
-            --pink-soft: #fff0f3;
-            --text-dark: #4a4a4a;
-        }
-
+        :root { --pink-main: #ff85a2; --pink-gradient: linear-gradient(135deg, #ff85a2 0%, #ffacbd 100%); --pink-soft: #fff0f3; --text-dark: #4a4a4a; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
-
-        body { 
-            background: linear-gradient(135deg, #fbb1bd 0%, #ffeaee 100%);
-            min-height: 100vh;
-            display: flex; justify-content: center; align-items: flex-start;
-            padding: 20px 15px; color: var(--text-dark);
-        }
-
-        .container { 
-            width: 100%; max-width: 480px; 
-            background: rgba(255, 255, 255, 0.92); 
-            backdrop-filter: blur(15px);
-            padding: 25px; border-radius: 40px; 
-            box-shadow: 0 25px 50px rgba(255, 133, 162, 0.3); 
-            border: 1px solid white;
-        }
-
+        body { background: linear-gradient(135deg, #fbb1bd 0%, #ffeaee 100%); min-height: 100vh; display: flex; justify-content: center; padding: 20px 15px; color: var(--text-dark); }
+        .container { width: 100%; max-width: 480px; background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(15px); padding: 25px; border-radius: 40px; box-shadow: 0 25px 50px rgba(255, 133, 162, 0.3); border: 1px solid white; }
         header { text-align: center; margin-bottom: 20px; }
-        header h1 { 
-            font-size: 28px; background: var(--pink-gradient);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            font-weight: 900; 
-        }
-
-        .welcome-box {
-            background: white; padding: 22px; border-radius: 30px; margin-bottom: 20px;
-            border: 1.5px solid rgba(255, 133, 162, 0.1); position: relative;
-        }
-        .welcome-box h2 { color: var(--pink-main); font-size: 19px; margin-bottom: 5px; font-weight: 800; }
-        
-        #quote-text { 
-            font-size: 12.5px; color: #777; font-style: italic; line-height: 1.5;
-            margin-top: 8px; padding-top: 8px; border-top: 1px dashed #eee;
-        }
-        
-        .progress-container { margin-top: 15px; }
-        .progress-label { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; margin-bottom: 5px; color: var(--pink-main); }
-        .progress-bar { width: 100%; height: 8px; background: var(--pink-soft); border-radius: 10px; overflow: hidden; }
+        header h1 { font-size: 28px; background: var(--pink-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; }
+        .welcome-box { background: white; padding: 20px; border-radius: 30px; margin-bottom: 20px; border: 1.5px solid rgba(255, 133, 162, 0.1); }
+        .progress-bar { width: 100%; height: 8px; background: var(--pink-soft); border-radius: 10px; overflow: hidden; margin-top: 10px; }
         .progress-fill { width: 0%; height: 100%; background: var(--pink-gradient); transition: 0.5s ease; }
-
-        /* DAILY SNAP SECTION */
-        .daily-snap-card {
-            background: white; padding: 15px; border-radius: 30px; margin-bottom: 20px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05); border: 1.5px solid rgba(255, 133, 162, 0.1);
-            text-align: center; position: relative;
-        }
-        .daily-snap-card h3 { 
-            color: var(--pink-main); font-size: 16px; margin-bottom: 10px; 
-            font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px;
-        }
-        .snap-preview { 
-            width: 100%; height: 200px; background: #f0f0f0; border-radius: 20px; 
-            display: flex; align-items: center; justify-content: center; overflow: hidden;
-            margin-bottom: 15px; position: relative;
-        }
-        .snap-preview img { width: 100%; height: 100%; object-fit: cover; }
-        .snap-preview .placeholder { color: #ccc; font-size: 14px; }
-        .snap-input { display: none; }
-        .snap-btn {
-            background: var(--pink-gradient); color: white; padding: 10px 20px;
-            border-radius: 15px; border: none; font-weight: 700; cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255, 133, 162, 0.3); transition: 0.3s;
-        }
-        .snap-btn:active { transform: scale(0.98); }
-        .snap-loading {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.8); display: flex; align-items: center; justify-content: center;
-            border-radius: 20px; font-size: 14px; color: var(--pink-main); font-weight: 700;
-        }
-
-        .agenda-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;
-        }
-        .agenda-card {
-            background: white; padding: 15px; border-radius: 25px; text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.02); border: 1.5px solid #fff;
-        }
-        .val { font-size: 22px; font-weight: 900; color: var(--pink-main); display: block; }
-        .lbl { font-size: 10px; font-weight: 700; color: #aaa; text-transform: uppercase; }
-
-        .input-group { 
-            background: white; padding: 15px; border-radius: 25px;
-            margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.03);
-        }
-        input { 
-            padding: 12px; border: 2px solid #fdf2f4; border-radius: 15px; 
-            outline: none; background: #fffafa; font-size: 14px;
-        }
-        .btn-add { 
-            background: var(--pink-gradient); color: white; border: none;
-            padding: 14px; border-radius: 15px; font-weight: 800; cursor: pointer;
-        }
-
-        #taskList { display: flex; flex-direction: column; gap: 10px; }
-
-        .task-card { 
-            background: white; padding: 15px; border-radius: 22px; 
-            display: flex; align-items: center; gap: 12px;
-            border: 1px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.02);
-            transition: 0.3s;
-        }
-        .task-card.is-today { border: 1.5px solid #ffacbd; background: #fffcfd; }
-        .task-card.completed { opacity: 0.6; }
-        .task-card.completed .task-title { text-decoration: line-through; color: #aaa; }
-
-        .check-circle { 
-            width: 24px; height: 24px; border: 2px solid var(--pink-soft); 
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: 0.3s; color: transparent;
-        }
-        .completed .check-circle { background: var(--pink-main); border-color: var(--pink-main); color: white; font-size: 12px; }
-
-        .task-info { flex: 1; cursor: pointer; }
-        .task-title { font-weight: 700; font-size: 14px; }
-        .task-date { font-size: 11px; color: var(--pink-main); font-weight: 700; }
-        .today-badge { background: var(--pink-main); color: white; font-size: 8px; padding: 2px 6px; border-radius: 5px; margin-left: 5px; vertical-align: middle; font-weight: 900; }
-
-        .actions { display: flex; gap: 5px; }
-        .btn-icon { width: 32px; height: 32px; border: none; border-radius: 10px; cursor: pointer; background: #fafafa; }
         
-        .cloud-status { text-align: center; font-size: 10px; color: #ffb1bd; margin-top: 25px; font-weight: 700; }
+        /* SNAP SECTION */
+        .daily-snap-card { background: white; padding: 15px; border-radius: 30px; margin-bottom: 20px; text-align: center; }
+        .snap-preview { width: 100%; height: 220px; background: #fafafa; border-radius: 20px; overflow: hidden; margin-bottom: 10px; border: 1px dashed #ffacbd; display: flex; align-items: center; justify-content: center; position: relative;}
+        .snap-preview img { width: 100%; height: 100%; object-fit: cover; }
+        .snap-btn { background: var(--pink-gradient); color: white; padding: 10px 20px; border-radius: 15px; border: none; font-weight: 700; cursor: pointer; width: 100%; }
+        
+        /* HISTORY SECTION */
+        .history-title { font-size: 14px; font-weight: 800; color: var(--pink-main); margin: 15px 0 10px; text-align: left; display: flex; align-items: center; gap: 5px;}
+        .history-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
+        .history-item { min-width: 80px; height: 80px; border-radius: 15px; overflow: hidden; flex-shrink: 0; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer;}
+        .history-item img { width: 100%; height: 100%; object-fit: cover; }
+
+        .agenda-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .agenda-card { background: white; padding: 15px; border-radius: 25px; text-align: center; }
+        .val { font-size: 20px; font-weight: 900; color: var(--pink-main); display: block; }
+        .lbl { font-size: 10px; font-weight: 700; color: #aaa; text-transform: uppercase; }
+        .input-group { background: white; padding: 15px; border-radius: 25px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; }
+        input { padding: 12px; border: 2px solid #fdf2f4; border-radius: 15px; outline: none; }
+        .task-card { background: white; padding: 15px; border-radius: 22px; display: flex; align-items: center; gap: 12px; margin-bottom: 10px; border: 1px solid #fff; }
+        .check-circle { width: 22px; height: 22px; border: 2px solid var(--pink-soft); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 10px; color: transparent;}
+        .completed { opacity: 0.5; }
+        .completed .check-circle { background: var(--pink-main); color: white; }
+        .completed .task-title { text-decoration: line-through; }
     </style>
 </head>
 <body>
-
 <div class="container">
-    <header>
-        <div class="app-badge">Ultimate Edition ✨</div>
-        <h1>Todo Pro App</h1>
-    </header>
-
+    <header><h1>Todo Pro App</h1></header>
     <div class="welcome-box">
         <h2 id="greeting">Hello, Meity!</h2>
-        <div id="quote-text">Loading inspiration...</div>
-        
-        <div class="progress-container">
-            <div class="progress-label"><span>Progress</span> <span id="progress-percent">0%</span></div>
-            <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-        </div>
+        <div id="quote-text" style="font-size: 12px; font-style: italic; color: #888; margin-top: 5px;"></div>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
     </div>
 
     <div class="daily-snap-card">
-        <h3><span style="font-size: 20px;">📸</span> Today's Snap</h3>
         <div class="snap-preview" id="snap-preview">
-            <img id="snap-img" src="" alt="Today's Snap" style="display: none;">
-            <span class="placeholder" id="snap-placeholder">No snap yet. Take one!</span>
-            <div class="snap-loading" id="snap-loading" style="display: none;">Uploading...</div>
+            <img id="snap-img" style="display: none;">
+            <span id="placeholder-text">No today's memory</span>
         </div>
-        <input type="file" accept="image/*" capture="camera" id="snap-input" class="snap-input">
-        <button class="snap-btn" id="take-snap-btn">Take a Snap!</button>
-    </div>
-    <div class="agenda-grid">
-        <div class="agenda-card"><span class="val" id="count-today">0</span><span class="lbl">Today</span></div>
-        <div class="agenda-card"><span class="val" id="count-total">0</span><span class="lbl">Total Task</span></div>
-    </div>
-    
-    <div class="input-group">
-        <input type="text" id="taskInput" placeholder="What's your plan?">
-        <input type="date" id="dateInput">
-        <button class="btn-add" id="addBtn">Save to Cloud 🎀</button>
+        <input type="file" accept="image/*" capture="camera" id="snap-input" style="display: none;">
+        <button class="snap-btn" onclick="document.getElementById('snap-input').click()">?? Take Today's Snap</button>
+        
+        <div class="history-title">?? Memory History</div>
+        <div class="history-scroll" id="history-scroll">
+            </div>
     </div>
 
+    <div class="agenda-grid">
+        <div class="agenda-card"><span class="val" id="count-today">0</span><span class="lbl">Today</span></div>
+        <div class="agenda-card"><span class="val" id="count-total">0</span><span class="lbl">Total</span></div>
+    </div>
+
+    <div class="input-group">
+        <input type="text" id="taskInput" placeholder="What's next?">
+        <input type="date" id="dateInput">
+        <button class="snap-btn" id="addBtn">Add Task ??</button>
+    </div>
     <div id="taskList"></div>
-    <div class="cloud-status">● Real-time Cloud Active</div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, updateDoc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, updateDoc, setDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBWeo6KAo6GsKHusxDGJB8kp_03-jB944w",
         authDomain: "meitytodopro.firebaseapp.com",
         projectId: "meitytodopro",
-        storageBucket: "meitytodopro.appspot.com", // Updated to default storage bucket
+        storageBucket: "meitytodopro.appspot.com",
         messagingSenderId: "820068449861",
-        appId: "1:820068449861:web:1ce45248eb06c8714cad2c",
-        measurementId: "G-SJM9WPX9JF"
+        appId: "1:820068449861:web:1ce45248eb06c8714cad2c"
     };
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const storage = getStorage(app); // Initialize Firebase Storage
     const tasksCol = collection(db, "todo_meity");
-    const snapsCol = collection(db, "daily_snaps"); // New collection for snaps
+    const snapsCol = collection(db, "daily_snaps");
 
-    // Dynamic English Greeting
+    // Dynamic UI
     const hr = new Date().getHours();
-    let greet = "Hello, Meity!";
-    if (hr < 12) greet = "Good Morning, Meity! ☀️";
-    else if (hr < 17) greet = "Good Afternoon, Meity! 🌤️";
-    else if (hr < 21) greet = "Good Evening, Meity! 🌸";
-    else greet = "Good Night, Meity! ✨";
-    document.getElementById('greeting').innerText = greet;
+    document.getElementById('greeting').innerText = hr < 12 ? "Good Morning, Meity! ??" : hr < 17 ? "Good Afternoon, Meity! ???" : "Good Evening, Meity! ?";
+    document.getElementById('quote-text').innerText = "Make it happen today. ??";
+    document.getElementById('dateInput').valueAsDate = new Date();
 
-    // English Random Quotes
-    const quotes = [
-        "Your daily dose of magic. Let's shine! ✨",
-        "Small steps every day lead to big results. 🌸",
-        "Make today amazing, just like you! 🌷",
-        "Dream it, plan it, do it. ☁️",
-        "Organize your life, organize your mind. ✨",
-        "A fresh start every morning. 🌤️",
-        "Turn your 'to-do' into 'done'! 🎀",
-        "Focus on the good. 🌸",
-        "Be productive, be happy! 🚀"
-    ];
-    document.getElementById('quote-text').innerText = quotes[Math.floor(Math.random() * quotes.length)];
-
-    const dateInput = document.getElementById('dateInput');
-    dateInput.valueAsDate = new Date();
-
-    const addBtn = document.getElementById('addBtn');
-    addBtn.addEventListener('click', async () => {
-        const textInput = document.getElementById('taskInput');
-        const text = textInput.value.trim();
-        const date = dateInput.value;
-        if (text && date) {
-            await addDoc(tasksCol, { text, date, completed: false, createdAt: Date.now() });
-            textInput.value = '';
-        }
-    });
-
-    const q = query(tasksCol, orderBy("createdAt", "desc"));
-    onSnapshot(q, (snapshot) => {
-        const taskList = document.getElementById('taskList');
-        taskList.innerHTML = '';
-        let total = 0, today = 0, done = 0;
+    // Tasks & Progress
+    onSnapshot(query(tasksCol, orderBy("createdAt", "desc")), (snap) => {
+        const list = document.getElementById('taskList'); list.innerHTML = '';
+        let total = 0, done = 0, today = 0;
         const todayStr = new Date().toISOString().split('T')[0];
-
-        snapshot.forEach((docSnap) => {
-            const task = docSnap.data();
-            const id = docSnap.id;
-            total++;
-            const isToday = task.date === todayStr;
-            if(isToday && !task.completed) today++;
-            if(task.completed) done++;
-
+        snap.forEach(d => {
+            const t = d.data(); total++;
+            if(t.completed) done++;
+            if(t.date === todayStr && !t.completed) today++;
             const card = document.createElement('div');
-            card.className = `task-card ${task.completed ? 'completed' : ''} ${isToday ? 'is-today' : ''}`;
-            card.innerHTML = `
-                <div class="check-circle" onclick="toggleTask('${id}', ${task.completed}); event.stopPropagation();">✔</div>
-                <div class="task-info" onclick="toggleTask('${id}', ${task.completed})">
-                    <div class="task-title">${task.text}${isToday ? '<span class="today-badge">TODAY</span>' : ''}</div>
-                    <div class="task-date">📅 ${task.date}</div>
-                </div>
-                <div class="actions">
-                    <button class="btn-icon" title="Edit Task" onclick="editTask('${id}', '${task.text}', '${task.date}'); event.stopPropagation();">✏️</button>
-                    <button class="btn-icon" title="Delete Task" onclick="deleteTask('${id}'); event.stopPropagation();">🗑️</button>
-                </div>
-            `;
-            taskList.appendChild(card);
+            card.className = `task-card ${t.completed ? 'completed' : ''}`;
+            card.innerHTML = `<div class="check-circle" onclick="toggleT('${d.id}', ${t.completed})">?</div><div style="flex:1"><div class="task-title" style="font-weight:700;font-size:14px">${t.text}</div><div style="font-size:10px;color:var(--pink-main)">${t.date}</div></div><button style="border:none;background:none;cursor:pointer" onclick="delT('${d.id}')">???</button>`;
+            list.appendChild(card);
         });
-
         document.getElementById('count-total').innerText = total;
         document.getElementById('count-today').innerText = today;
-        const percent = total > 0 ? Math.round((done / total) * 100) : 0;
-        document.getElementById('progress-percent').innerText = percent + '%';
-        document.getElementById('progress-fill').style.width = percent + '%';
+        document.getElementById('progress-fill').style.width = total > 0 ? (done/total*100)+'%' : '0%';
     });
 
-    window.toggleTask = async (id, currentStatus) => {
-        await updateDoc(doc(db, "todo_meity", id), { completed: !currentStatus });
+    window.toggleT = (id, s) => updateDoc(doc(db, "todo_meity", id), { completed: !s });
+    window.delT = (id) => confirm('Delete?') && deleteDoc(doc(db, "todo_meity", id));
+    document.getElementById('addBtn').onclick = async () => {
+        const t = document.getElementById('taskInput');
+        if(t.value) await addDoc(tasksCol, { text: t.value, date: document.getElementById('dateInput').value, completed: false, createdAt: Date.now() });
+        t.value = '';
     };
 
-    window.deleteTask = async (id) => {
-        if(confirm('Delete this task?')) await deleteDoc(doc(db, "todo_meity", id));
-    };
-
-    window.editTask = async (id, oldText, oldDate) => {
-        const newText = prompt("Edit task:", oldText);
-        const newDate = prompt("Change date:", oldDate);
-        if (newText && newDate) {
-            await updateDoc(doc(db, "todo_meity", id), { text: newText, date: newDate });
-        }
-    };
-
-    // --- DAILY SNAP LOGIC ---
-    const snapInput = document.getElementById('snap-input');
-    const takeSnapBtn = document.getElementById('take-snap-btn');
-    const snapImg = document.getElementById('snap-img');
-    const snapPlaceholder = document.getElementById('snap-placeholder');
-    const snapLoading = document.getElementById('snap-loading');
-
-    // Function to draw timestamp on image
-    function drawTimestamp(image, dateText, callback) {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        const img = new Image();
-        img.crossOrigin = "Anonymous"; // Required for loading images from different origins
-
-        img.onload = () => {
-            canvas.width = img.width;
-            canvas.height = img.height;
-            ctx.drawImage(img, 0, 0);
-
-            // Timestamp settings
-            ctx.font = 'bold ' + (img.width * 0.04) + 'px Quicksand'; // Adjust font size dynamically
-            ctx.fillStyle = 'white';
-            ctx.strokeStyle = 'black';
-            ctx.lineWidth = 2;
-            ctx.textAlign = 'right';
-            ctx.textBaseline = 'bottom';
-            const margin = img.width * 0.03;
-
-            // Draw text with outline
-            ctx.strokeText(dateText, canvas.width - margin, canvas.height - margin);
-            ctx.fillText(dateText, canvas.width - margin, canvas.height - margin);
-
-            callback(canvas.toDataURL('image/jpeg'));
-        };
-        img.src = image;
+    // HISTORY & SNAP LOGIC
+    async function updateSnaps() {
+        const q = query(snapsCol, orderBy("timestamp", "desc"));
+        const snapDocs = await getDocs(q);
+        const scroll = document.getElementById('history-scroll');
+        const todayStr = new Date().toISOString().split('T')[0];
+        scroll.innerHTML = '';
+        
+        snapDocs.forEach(d => {
+            const data = d.data();
+            // Update Main Preview if it's today
+            if(d.id === todayStr) {
+                document.getElementById('snap-img').src = data.img;
+                document.getElementById('snap-img').style.display = 'block';
+                document.getElementById('placeholder-text').style.display = 'none';
+            }
+            // Add to History Scroll
+            const item = document.createElement('div');
+            item.className = 'history-item';
+            item.innerHTML = `<img src="${data.img}" onclick="document.getElementById('snap-img').src='${data.img}'">`;
+            scroll.appendChild(item);
+        });
     }
+    updateSnaps();
 
-    // Load today's snap on page load
-    async function loadTodaySnap() {
-        const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-        const docRef = doc(db, "daily_snaps", today);
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-            const snapData = docSnap.data();
-            snapImg.src = snapData.url;
-            snapImg.style.display = 'block';
-            snapPlaceholder.style.display = 'none';
-        } else {
-            snapImg.style.display = 'none';
-            snapPlaceholder.style.display = 'block';
-        }
-    }
-    loadTodaySnap(); // Call on initial load
-
-    takeSnapBtn.addEventListener('click', () => {
-        snapInput.click(); // Trigger file input click
-    });
-
-    snapInput.addEventListener('change', async (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        snapLoading.style.display = 'flex'; // Show loading
-
+    document.getElementById('snap-input').onchange = (e) => {
+        const file = e.target.files[0];
         const reader = new FileReader();
-        reader.onload = async (e) => {
-            const originalImage = e.target.result;
-            const now = new Date();
-            const dateText = now.toLocaleString('en-GB', { 
-                day: '2-digit', month: 'short', year: 'numeric', 
-                hour: '2-digit', minute: '2-digit', hour12: false 
-            }).replace(',', '');
-
-            drawTimestamp(originalImage, dateText, async (stampedImage) => {
-                const today = new Date().toISOString().split('T')[0];
-                const storageRef = ref(storage, `snaps/${today}.jpg`);
+        reader.onload = (event) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const max = 600;
+                const scale = Math.min(max/img.width, max/img.height);
+                canvas.width = img.width * scale; canvas.height = img.height * scale;
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                ctx.font = 'bold 20px Quicksand'; ctx.fillStyle = 'white';
+                ctx.shadowColor = "black"; ctx.shadowBlur = 5;
+                ctx.fillText(new Date().toLocaleDateString(), 15, canvas.height - 15);
                 
-                // Convert data URL to Blob
-                const response = await fetch(stampedImage);
-                const blob = await response.blob();
-
-                await uploadBytes(storageRef, blob);
-                const downloadURL = await getDownloadURL(storageRef);
-
-                // Save URL to Firestore
-                await setDoc(doc(db, "daily_snaps", today), {
-                    url: downloadURL,
-                    timestamp: now.toISOString(),
-                });
-
-                snapImg.src = downloadURL;
-                snapImg.style.display = 'block';
-                snapPlaceholder.style.display = 'none';
-                snapLoading.style.display = 'none'; // Hide loading
-            });
+                const base64 = canvas.toDataURL('image/jpeg', 0.6);
+                const today = new Date().toISOString().split('T')[0];
+                setDoc(doc(db, "daily_snaps", today), { img: base64, timestamp: Date.now() }).then(updateSnaps);
+            };
+            img.src = event.target.result;
         };
         reader.readAsDataURL(file);
-    });
-
+    };
 </script>
 </body>
 </html>
