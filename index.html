@@ -58,6 +58,36 @@
         .progress-bar { width: 100%; height: 8px; background: var(--pink-soft); border-radius: 10px; overflow: hidden; }
         .progress-fill { width: 0%; height: 100%; background: var(--pink-gradient); transition: 0.5s ease; }
 
+        /* DAILY SNAP SECTION */
+        .daily-snap-card {
+            background: white; padding: 15px; border-radius: 30px; margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05); border: 1.5px solid rgba(255, 133, 162, 0.1);
+            text-align: center; position: relative;
+        }
+        .daily-snap-card h3 { 
+            color: var(--pink-main); font-size: 16px; margin-bottom: 10px; 
+            font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .snap-preview { 
+            width: 100%; height: 200px; background: #f0f0f0; border-radius: 20px; 
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+            margin-bottom: 15px; position: relative;
+        }
+        .snap-preview img { width: 100%; height: 100%; object-fit: cover; }
+        .snap-preview .placeholder { color: #ccc; font-size: 14px; }
+        .snap-input { display: none; }
+        .snap-btn {
+            background: var(--pink-gradient); color: white; padding: 10px 20px;
+            border-radius: 15px; border: none; font-weight: 700; cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 133, 162, 0.3); transition: 0.3s;
+        }
+        .snap-btn:active { transform: scale(0.98); }
+        .snap-loading {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.8); display: flex; align-items: center; justify-content: center;
+            border-radius: 20px; font-size: 14px; color: var(--pink-main); font-weight: 700;
+        }
+
         .agenda-grid {
             display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;
         }
@@ -130,6 +160,16 @@
         </div>
     </div>
 
+    <div class="daily-snap-card">
+        <h3><span style="font-size: 20px;">📸</span> Today's Snap</h3>
+        <div class="snap-preview" id="snap-preview">
+            <img id="snap-img" src="" alt="Today's Snap" style="display: none;">
+            <span class="placeholder" id="snap-placeholder">No snap yet. Take one!</span>
+            <div class="snap-loading" id="snap-loading" style="display: none;">Uploading...</div>
+        </div>
+        <input type="file" accept="image/*" capture="camera" id="snap-input" class="snap-input">
+        <button class="snap-btn" id="take-snap-btn">Take a Snap!</button>
+    </div>
     <div class="agenda-grid">
         <div class="agenda-card"><span class="val" id="count-today">0</span><span class="lbl">Today</span></div>
         <div class="agenda-card"><span class="val" id="count-total">0</span><span class="lbl">Total Task</span></div>
@@ -147,13 +187,14 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, updateDoc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBWeo6KAo6GsKHusxDGJB8kp_03-jB944w",
         authDomain: "meitytodopro.firebaseapp.com",
         projectId: "meitytodopro",
-        storageBucket: "meitytodopro.firebasestorage.app",
+        storageBucket: "meitytodopro.appspot.com", // Updated to default storage bucket
         messagingSenderId: "820068449861",
         appId: "1:820068449861:web:1ce45248eb06c8714cad2c",
         measurementId: "G-SJM9WPX9JF"
@@ -161,7 +202,9 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const storage = getStorage(app); // Initialize Firebase Storage
     const tasksCol = collection(db, "todo_meity");
+    const snapsCol = collection(db, "daily_snaps"); // New collection for snaps
 
     // Dynamic English Greeting
     const hr = new Date().getHours();
@@ -224,8 +267,8 @@
                     <div class="task-date">📅 ${task.date}</div>
                 </div>
                 <div class="actions">
-                    <button class="btn-icon" onclick="editTask('${id}', '${task.text}', '${task.date}'); event.stopPropagation();">✏️</button>
-                    <button class="btn-icon" onclick="deleteTask('${id}'); event.stopPropagation();">🗑️</button>
+                    <button class="btn-icon" title="Edit Task" onclick="editTask('${id}', '${task.text}', '${task.date}'); event.stopPropagation();">✏️</button>
+                    <button class="btn-icon" title="Delete Task" onclick="deleteTask('${id}'); event.stopPropagation();">🗑️</button>
                 </div>
             `;
             taskList.appendChild(card);
@@ -253,6 +296,107 @@
             await updateDoc(doc(db, "todo_meity", id), { text: newText, date: newDate });
         }
     };
+
+    // --- DAILY SNAP LOGIC ---
+    const snapInput = document.getElementById('snap-input');
+    const takeSnapBtn = document.getElementById('take-snap-btn');
+    const snapImg = document.getElementById('snap-img');
+    const snapPlaceholder = document.getElementById('snap-placeholder');
+    const snapLoading = document.getElementById('snap-loading');
+
+    // Function to draw timestamp on image
+    function drawTimestamp(image, dateText, callback) {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        img.crossOrigin = "Anonymous"; // Required for loading images from different origins
+
+        img.onload = () => {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+
+            // Timestamp settings
+            ctx.font = 'bold ' + (img.width * 0.04) + 'px Quicksand'; // Adjust font size dynamically
+            ctx.fillStyle = 'white';
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = 2;
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'bottom';
+            const margin = img.width * 0.03;
+
+            // Draw text with outline
+            ctx.strokeText(dateText, canvas.width - margin, canvas.height - margin);
+            ctx.fillText(dateText, canvas.width - margin, canvas.height - margin);
+
+            callback(canvas.toDataURL('image/jpeg'));
+        };
+        img.src = image;
+    }
+
+    // Load today's snap on page load
+    async function loadTodaySnap() {
+        const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+        const docRef = doc(db, "daily_snaps", today);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const snapData = docSnap.data();
+            snapImg.src = snapData.url;
+            snapImg.style.display = 'block';
+            snapPlaceholder.style.display = 'none';
+        } else {
+            snapImg.style.display = 'none';
+            snapPlaceholder.style.display = 'block';
+        }
+    }
+    loadTodaySnap(); // Call on initial load
+
+    takeSnapBtn.addEventListener('click', () => {
+        snapInput.click(); // Trigger file input click
+    });
+
+    snapInput.addEventListener('change', async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        snapLoading.style.display = 'flex'; // Show loading
+
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            const originalImage = e.target.result;
+            const now = new Date();
+            const dateText = now.toLocaleString('en-GB', { 
+                day: '2-digit', month: 'short', year: 'numeric', 
+                hour: '2-digit', minute: '2-digit', hour12: false 
+            }).replace(',', '');
+
+            drawTimestamp(originalImage, dateText, async (stampedImage) => {
+                const today = new Date().toISOString().split('T')[0];
+                const storageRef = ref(storage, `snaps/${today}.jpg`);
+                
+                // Convert data URL to Blob
+                const response = await fetch(stampedImage);
+                const blob = await response.blob();
+
+                await uploadBytes(storageRef, blob);
+                const downloadURL = await getDownloadURL(storageRef);
+
+                // Save URL to Firestore
+                await setDoc(doc(db, "daily_snaps", today), {
+                    url: downloadURL,
+                    timestamp: now.toISOString(),
+                });
+
+                snapImg.src = downloadURL;
+                snapImg.style.display = 'block';
+                snapPlaceholder.style.display = 'none';
+                snapLoading.style.display = 'none'; // Hide loading
+            });
+        };
+        reader.readAsDataURL(file);
+    });
+
 </script>
 </body>
 </html>
