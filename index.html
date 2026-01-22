@@ -43,11 +43,15 @@
         }
 
         .welcome-box {
-            background: white; padding: 20px; border-radius: 30px; margin-bottom: 20px;
-            border: 1.5px solid rgba(255, 133, 162, 0.1);
+            background: white; padding: 22px; border-radius: 30px; margin-bottom: 20px;
+            border: 1.5px solid rgba(255, 133, 162, 0.1); position: relative;
         }
         .welcome-box h2 { color: var(--pink-main); font-size: 19px; margin-bottom: 5px; font-weight: 800; }
-        .welcome-box p { font-size: 12.5px; color: #777; font-style: italic; }
+        
+        #quote-text { 
+            font-size: 12.5px; color: #777; font-style: italic; line-height: 1.5;
+            margin-top: 8px; padding-top: 8px; border-top: 1px dashed #eee;
+        }
         
         .progress-container { margin-top: 15px; }
         .progress-label { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; margin-bottom: 5px; color: var(--pink-main); }
@@ -103,8 +107,7 @@
         .today-badge { background: var(--pink-main); color: white; font-size: 8px; padding: 2px 6px; border-radius: 5px; margin-left: 5px; vertical-align: middle; font-weight: 900; }
 
         .actions { display: flex; gap: 5px; }
-        .btn-icon { width: 32px; height: 32px; border: none; border-radius: 10px; cursor: pointer; background: #fafafa; transition: 0.2s; }
-        .btn-icon:hover { background: var(--pink-soft); color: var(--pink-main); }
+        .btn-icon { width: 32px; height: 32px; border: none; border-radius: 10px; cursor: pointer; background: #fafafa; }
         
         .cloud-status { text-align: center; font-size: 10px; color: #ffb1bd; margin-top: 25px; font-weight: 700; }
     </style>
@@ -119,27 +122,27 @@
 
     <div class="welcome-box">
         <h2 id="greeting">Hello, Meity!</h2>
-        <p>Share your list and make your life more organized.</p>
+        <div id="quote-text">Loading inspiration...</div>
         
         <div class="progress-container">
-            <div class="progress-label"><span>Task Progress</span> <span id="progress-percent">0%</span></div>
+            <div class="progress-label"><span>Progress</span> <span id="progress-percent">0%</span></div>
             <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
         </div>
     </div>
 
     <div class="agenda-grid">
         <div class="agenda-card"><span class="val" id="count-today">0</span><span class="lbl">Today</span></div>
-        <div class="agenda-card"><span class="val" id="count-total">0</span><span class="lbl">Total Tasks</span></div>
+        <div class="agenda-card"><span class="val" id="count-total">0</span><span class="lbl">Total Task</span></div>
     </div>
     
     <div class="input-group">
-        <input type="text" id="taskInput" placeholder="What's your plan for today?">
+        <input type="text" id="taskInput" placeholder="What's your plan?">
         <input type="date" id="dateInput">
         <button class="btn-add" id="addBtn">Save to Cloud 🎀</button>
     </div>
 
     <div id="taskList"></div>
-    <div class="cloud-status">● Real-time Cloud Protection Active</div>
+    <div class="cloud-status">● Real-time Cloud Active</div>
 </div>
 
 <script type="module">
@@ -160,15 +163,28 @@
     const db = getFirestore(app);
     const tasksCol = collection(db, "todo_meity");
 
-    // English Greetings Logic
+    // Dynamic English Greeting
     const hr = new Date().getHours();
     let greet = "Hello, Meity!";
     if (hr < 12) greet = "Good Morning, Meity! ☀️";
     else if (hr < 17) greet = "Good Afternoon, Meity! 🌤️";
     else if (hr < 21) greet = "Good Evening, Meity! 🌸";
     else greet = "Good Night, Meity! ✨";
-    
     document.getElementById('greeting').innerText = greet;
+
+    // English Random Quotes
+    const quotes = [
+        "Your daily dose of magic. Let's shine! ✨",
+        "Small steps every day lead to big results. 🌸",
+        "Make today amazing, just like you! 🌷",
+        "Dream it, plan it, do it. ☁️",
+        "Organize your life, organize your mind. ✨",
+        "A fresh start every morning. 🌤️",
+        "Turn your 'to-do' into 'done'! 🎀",
+        "Focus on the good. 🌸",
+        "Be productive, be happy! 🚀"
+    ];
+    document.getElementById('quote-text').innerText = quotes[Math.floor(Math.random() * quotes.length)];
 
     const dateInput = document.getElementById('dateInput');
     dateInput.valueAsDate = new Date();
@@ -208,8 +224,8 @@
                     <div class="task-date">📅 ${task.date}</div>
                 </div>
                 <div class="actions">
-                    <button class="btn-icon" title="Edit Task" onclick="editTask('${id}', '${task.text}', '${task.date}'); event.stopPropagation();">✏️</button>
-                    <button class="btn-icon" title="Delete Task" onclick="deleteTask('${id}'); event.stopPropagation();">🗑️</button>
+                    <button class="btn-icon" onclick="editTask('${id}', '${task.text}', '${task.date}'); event.stopPropagation();">✏️</button>
+                    <button class="btn-icon" onclick="deleteTask('${id}'); event.stopPropagation();">🗑️</button>
                 </div>
             `;
             taskList.appendChild(card);
@@ -227,11 +243,11 @@
     };
 
     window.deleteTask = async (id) => {
-        if(confirm('Are you sure you want to delete this task?')) await deleteDoc(doc(db, "todo_meity", id));
+        if(confirm('Delete this task?')) await deleteDoc(doc(db, "todo_meity", id));
     };
 
     window.editTask = async (id, oldText, oldDate) => {
-        const newText = prompt("Edit your task:", oldText);
+        const newText = prompt("Edit task:", oldText);
         const newDate = prompt("Change date:", oldDate);
         if (newText && newDate) {
             await updateDoc(doc(db, "todo_meity", id), { text: newText, date: newDate });
