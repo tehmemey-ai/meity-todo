@@ -5,112 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo Pro Meity ✨</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        :root { 
-            --pink-main: #ff85a2; 
-            --pink-gradient: linear-gradient(135deg, #ff85a2 0%, #ffacbd 100%); 
-            --pink-soft: #fff0f3; 
-            --text-dark: #4a4a4a; 
-        }
-
+        :root { --pink-main: #ff85a2; --pink-gradient: linear-gradient(135deg, #ff85a2 0%, #ffacbd 100%); --pink-soft: #fff0f3; --text-dark: #4a4a4a; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
-
-        body { 
-            background: linear-gradient(135deg, #fbb1bd 0%, #ffeaee 100%); 
-            min-height: 100vh; 
-            display: flex; justify-content: center; 
-            padding: 20px 15px; color: var(--text-dark); 
-        }
-
-        .container { 
-            width: 100%; max-width: 450px; 
-            background: rgba(255, 255, 255, 0.95); 
-            backdrop-filter: blur(10px); 
-            padding: 30px; border-radius: 40px; 
-            box-shadow: 0 20px 40px rgba(255, 133, 162, 0.2); 
-        }
-
-        header h1 { 
-            text-align: center; font-size: 26px; margin-bottom: 20px;
-            background: var(--pink-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; 
-        }
-
-        .welcome-box { 
-            background: #fff; padding: 20px; border-radius: 25px; margin-bottom: 20px; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.02); border: 1px solid var(--pink-soft);
-        }
+        body { background: linear-gradient(135deg, #fbb1bd 0%, #ffeaee 100%); min-height: 100vh; display: flex; justify-content: center; padding: 20px 15px; color: var(--text-dark); }
+        .container { width: 100%; max-width: 450px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 25px; border-radius: 40px; box-shadow: 0 20px 40px rgba(255, 133, 162, 0.2); }
+        header h1 { text-align: center; font-size: 24px; margin-bottom: 20px; background: var(--pink-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; }
+        .welcome-box { background: #fff; padding: 20px; border-radius: 25px; margin-bottom: 20px; border: 1px solid var(--pink-soft); position: relative; }
+        .mood-box { display: flex; gap: 8px; margin-top: 10px; font-size: 20px; }
+        .mood-btn { cursor: pointer; transition: 0.3s; opacity: 0.4; filter: grayscale(1); }
+        .mood-btn.active { opacity: 1; filter: grayscale(0); transform: scale(1.2); }
         
-        .welcome-box h2 { font-size: 18px; color: var(--pink-main); margin-bottom: 5px; }
-
-        /* SNAP SECTION BEAUTIFIED */
-        .daily-snap-card { margin-bottom: 25px; }
-        .snap-preview { 
-            width: 100%; height: 230px; background: #fafafa; border-radius: 30px; 
-            overflow: hidden; margin-bottom: 12px; border: 2px dashed #ffcbd7; 
-            display: flex; align-items: center; justify-content: center; position: relative;
-        }
-        .snap-preview img { width: 100%; height: 100%; object-fit: cover; border-radius: 28px; }
+        .daily-snap-card { background: white; padding: 15px; border-radius: 30px; margin-bottom: 20px; }
+        .snap-preview { width: 100%; height: 200px; background: #fafafa; border-radius: 25px; overflow: hidden; margin-bottom: 12px; border: 2px dashed #ffcbd7; display: flex; align-items: center; justify-content: center; }
+        .snap-preview img { width: 100%; height: 100%; object-fit: cover; }
+        .snap-btn { background: var(--pink-gradient); color: white; padding: 12px; border-radius: 18px; border: none; font-weight: 800; cursor: pointer; width: 100%; }
         
-        .snap-btn { 
-            background: var(--pink-gradient); color: white; padding: 12px; 
-            border-radius: 18px; border: none; font-weight: 800; cursor: pointer; 
-            width: 100%; box-shadow: 0 8px 15px rgba(255, 133, 162, 0.2);
-            transition: 0.3s;
-        }
-
-        .history-section { margin-top: 15px; }
-        .history-title { font-size: 13px; font-weight: 800; color: #bbb; margin-bottom: 10px; padding-left: 5px; text-transform: uppercase; letter-spacing: 1px; }
-        .history-scroll { display: flex; gap: 12px; overflow-x: auto; padding: 5px; scrollbar-width: none; }
-        .history-item { 
-            min-width: 65px; height: 65px; border-radius: 18px; overflow: hidden; 
-            flex-shrink: 0; border: 3px solid white; box-shadow: 0 5px 10px rgba(0,0,0,0.08); 
-            cursor: pointer; transition: 0.3s;
-        }
-        .history-item:hover { transform: translateY(-3px); }
-
-        /* TASK SECTION */
+        .history-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 10px 0; scrollbar-width: none; }
+        .history-item { min-width: 55px; height: 55px; border-radius: 12px; overflow: hidden; border: 2px solid white; box-shadow: 0 4px 8px rgba(0,0,0,0.1); flex-shrink: 0; }
+        
         .agenda-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-        .agenda-card { background: white; padding: 15px; border-radius: 22px; text-align: center; border: 1px solid var(--pink-soft); }
+        .agenda-card { background: white; padding: 12px; border-radius: 20px; text-align: center; border: 1px solid var(--pink-soft); }
         .val { font-size: 20px; font-weight: 900; color: var(--pink-main); }
         .lbl { font-size: 10px; font-weight: 700; color: #ccc; }
 
-        .input-group { background: white; padding: 15px; border-radius: 25px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
-        input { padding: 12px; border: 2px solid #fff5f7; border-radius: 15px; outline: none; background: #fffafa; font-weight: 600; }
+        .input-group { background: white; padding: 15px; border-radius: 25px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px; }
+        input { padding: 12px; border: 2px solid #fff5f7; border-radius: 15px; outline: none; background: #fffafa; }
         
-        .task-card { 
-            background: white; padding: 16px; border-radius: 22px; display: flex; align-items: center; gap: 12px; 
-            margin-bottom: 10px; border: 1px solid #fff; box-shadow: 0 5px 10px rgba(0,0,0,0.02);
-        }
+        .task-card { background: white; padding: 15px; border-radius: 20px; display: flex; align-items: center; gap: 10px; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
         .check-circle { width: 22px; height: 22px; border: 2px solid var(--pink-soft); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 10px; color: transparent; }
         .completed { opacity: 0.5; }
         .completed .check-circle { background: var(--pink-main); color: white; border-color: var(--pink-main); }
         .completed .task-title { text-decoration: line-through; }
+        .btn-icon { width: 30px; height: 30px; border: none; border-radius: 8px; cursor: pointer; background: #f8f8f8; }
     </style>
 </head>
 <body>
 <div class="container">
-    <header><h1>Todo Pro App ✨</h1></header>
+    <header><h1>Todo Pro ✨</h1></header>
     
     <div class="welcome-box">
-        <h2 id="greeting">Hello, Meity!</h2>
-        <div id="quote-text" style="font-size: 12px; font-style: italic; color: #aaa;">"Loading magic..."</div>
-        <div style="width:100%; height:6px; background:#f0f0f0; border-radius:10px; margin-top:12px; overflow:hidden;">
-            <div id="progress-fill" style="width: 0%; height:100%; background:var(--pink-gradient); transition:0.5s;"></div>
+        <h2 id="greeting">Hi Meity!</h2>
+        <div id="quote-text" style="font-size: 11px; color: #aaa;">"Dream big, do small steps."</div>
+        <div class="mood-box" id="mood-container">
+            <span class="mood-btn" onclick="setMood('😊')">😊</span>
+            <span class="mood-btn" onclick="setMood('🌸')">🌸</span>
+            <span class="mood-btn" onclick="setMood('☕')">☕</span>
+            <span class="mood-btn" onclick="setMood('🔥')">🔥</span>
+            <span class="mood-btn" onclick="setMood('😴')">😴</span>
+        </div>
+        <div style="width:100%; height:6px; background:#f0f0f0; border-radius:10px; margin-top:15px; overflow:hidden;">
+            <div id="progress-fill" style="width: 0%; height:100%; background:var(--pink-gradient); transition:0.8s;"></div>
         </div>
     </div>
 
     <div class="daily-snap-card">
         <div class="snap-preview" id="snap-preview">
             <img id="snap-img" style="display: none;">
-            <span id="placeholder-text" style="color:#ddd; font-weight:700; font-size:13px;">CAPTURE YOUR MOMENT</span>
+            <span id="placeholder-text" style="color:#ddd; font-weight:700; font-size:11px;">TODAY'S MOMENT</span>
         </div>
         <input type="file" accept="image/*" capture="camera" id="snap-input" style="display: none;">
-        <button class="snap-btn" onclick="document.getElementById('snap-input').click()">📸 Take Today's Snap</button>
-        
-        <div class="history-section">
-            <div class="history-title">History</div>
-            <div class="history-scroll" id="history-scroll"></div>
-        </div>
+        <button class="snap-btn" onclick="document.getElementById('snap-input').click()">📸 Snap Today</button>
+        <div class="history-scroll" id="history-scroll"></div>
     </div>
 
     <div class="agenda-grid">
@@ -119,16 +76,16 @@
     </div>
 
     <div class="input-group">
-        <input type="text" id="taskInput" placeholder="What's on your mind?">
+        <input type="text" id="taskInput" placeholder="What's the plan?">
         <input type="date" id="dateInput">
-        <button class="snap-btn" id="addBtn" style="padding: 10px;">Add Plan 🎀</button>
+        <button class="snap-btn" id="addBtn" style="padding: 10px;">Add Task 🎀</button>
     </div>
     <div id="taskList"></div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, updateDoc, setDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, updateDoc, setDoc, getDocs, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBWeo6KAo6GsKHusxDGJB8kp_03-jB944w",
@@ -143,25 +100,51 @@
     const db = getFirestore(app);
     const tasksCol = collection(db, "todo_meity");
     const snapsCol = collection(db, "daily_snaps");
+    const todayStr = new Date().toISOString().split('T')[0];
 
-    // Dynamic UI
+    // Mood Logic
+    window.setMood = async (emoji) => {
+        await setDoc(doc(db, "moods", todayStr), { mood: emoji });
+        renderMood(emoji);
+    };
+
+    function renderMood(emoji) {
+        document.querySelectorAll('.mood-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.innerText === emoji);
+        });
+    }
+
+    async function loadMood() {
+        const d = await getDoc(doc(db, "moods", todayStr));
+        if(d.exists()) renderMood(d.data().mood);
+    }
+    loadMood();
+
+    // Greeting
     const hr = new Date().getHours();
     document.getElementById('greeting').innerText = hr < 12 ? "Good Morning, Meity! ☀️" : hr < 17 ? "Good Afternoon, Meity! 🌤️" : "Good Evening, Meity! ✨";
-    document.getElementById('quote-text').innerText = "Small steps, big magic. ✨";
     document.getElementById('dateInput').valueAsDate = new Date();
 
-    // Tasks Logic
+    // Tasks
     onSnapshot(query(tasksCol, orderBy("createdAt", "desc")), (snap) => {
         const list = document.getElementById('taskList'); list.innerHTML = '';
         let total = 0, done = 0, today = 0;
-        const todayStr = new Date().toISOString().split('T')[0];
         snap.forEach(d => {
             const t = d.data(); total++;
             if(t.completed) done++;
             if(t.date === todayStr && !t.completed) today++;
             const card = document.createElement('div');
             card.className = `task-card ${t.completed ? 'completed' : ''}`;
-            card.innerHTML = `<div class="check-circle" onclick="toggleT('${d.id}', ${t.completed})">✔</div><div style="flex:1"><div class="task-title" style="font-weight:700;font-size:14px">${t.text}</div><div style="font-size:10px;color:var(--pink-main);font-weight:700;">${t.date}</div></div><button style="border:none;background:none;cursor:pointer;font-size:16px" onclick="delT('${d.id}')">🗑️</button>`;
+            card.innerHTML = `
+                <div class="check-circle" onclick="handleToggle('${d.id}', ${t.completed})">✔</div>
+                <div style="flex:1">
+                    <div class="task-title" style="font-weight:700;font-size:13px">${t.text}</div>
+                    <div style="font-size:9px;color:var(--pink-main);font-weight:700;">${t.date}</div>
+                </div>
+                <div style="display:flex; gap:5px">
+                    <button class="btn-icon" onclick="editT('${d.id}', '${t.text}', '${t.date}')">✏️</button>
+                    <button class="btn-icon" onclick="delT('${d.id}')">🗑️</button>
+                </div>`;
             list.appendChild(card);
         });
         document.getElementById('count-total').innerText = total;
@@ -169,22 +152,28 @@
         document.getElementById('progress-fill').style.width = total > 0 ? (done/total*100)+'%' : '0%';
     });
 
-    window.toggleT = (id, s) => updateDoc(doc(db, "todo_meity", id), { completed: !s });
-    window.delT = (id) => confirm('Delete this task?') && deleteDoc(doc(db, "todo_meity", id));
+    window.handleToggle = (id, s) => {
+        if(!s) confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#ff85a2', '#ffacbd', '#ffffff'] });
+        updateDoc(doc(db, "todo_meity", id), { completed: !s });
+    };
+
+    window.delT = (id) => confirm('Delete?') && deleteDoc(doc(db, "todo_meity", id));
+    window.editT = async (id, oldT, oldD) => {
+        const newT = prompt("Edit Task:", oldT);
+        const newD = prompt("Edit Date:", oldD);
+        if(newT && newD) await updateDoc(doc(db, "todo_meity", id), { text: newT, date: newD });
+    };
+
     document.getElementById('addBtn').onclick = async () => {
         const t = document.getElementById('taskInput');
         if(t.value) await addDoc(tasksCol, { text: t.value, date: document.getElementById('dateInput').value, completed: false, createdAt: Date.now() });
         t.value = '';
     };
 
-    // HISTORY & SNAP LOGIC
+    // Snaps
     async function updateSnaps() {
-        const q = query(snapsCol, orderBy("timestamp", "desc"));
-        const snapDocs = await getDocs(q);
-        const scroll = document.getElementById('history-scroll');
-        const todayStr = new Date().toISOString().split('T')[0];
-        scroll.innerHTML = '';
-        
+        const snapDocs = await getDocs(query(snapsCol, orderBy("timestamp", "desc")));
+        const scroll = document.getElementById('history-scroll'); scroll.innerHTML = '';
         snapDocs.forEach(d => {
             const data = d.data();
             if(d.id === todayStr) {
@@ -194,7 +183,7 @@
             }
             const item = document.createElement('div');
             item.className = 'history-item';
-            item.innerHTML = `<img src="${data.img}" onclick="document.getElementById('snap-img').src='${data.img}'; document.getElementById('snap-img').style.display='block'; document.getElementById('placeholder-text').style.display='none';">`;
+            item.innerHTML = `<img src="${data.img}" style="width:100%;height:100%;object-fit:cover" onclick="document.getElementById('snap-img').src='${data.img}'; document.getElementById('snap-img').style.display='block';">`;
             scroll.appendChild(item);
         });
     }
@@ -211,15 +200,10 @@
                 const scale = Math.min(600/img.width, 600/img.height);
                 canvas.width = img.width * scale; canvas.height = img.height * scale;
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                
-                // Aesthetic Timestamp
-                ctx.font = 'bold 22px Quicksand'; ctx.fillStyle = 'rgba(255,255,255,0.9)';
-                ctx.shadowColor = "rgba(0,0,0,0.3)"; ctx.shadowBlur = 4;
-                ctx.fillText(new Date().toLocaleDateString('en-GB'), 20, canvas.height - 20);
-                
-                const base64 = canvas.toDataURL('image/jpeg', 0.7);
-                const today = new Date().toISOString().split('T')[0];
-                setDoc(doc(db, "daily_snaps", today), { img: base64, timestamp: Date.now() }).then(updateSnaps);
+                ctx.font = 'bold 20px Quicksand'; ctx.fillStyle = 'white';
+                ctx.fillText(new Date().toLocaleDateString(), 15, canvas.height - 15);
+                const base64 = canvas.toDataURL('image/jpeg', 0.6);
+                setDoc(doc(db, "daily_snaps", todayStr), { img: base64, timestamp: Date.now() }).then(updateSnaps);
             };
             img.src = event.target.result;
         };
