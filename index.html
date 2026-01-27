@@ -7,44 +7,51 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        :root { --pink-main: #ff85a2; --pink-gradient: linear-gradient(135deg, #ff85a2 0%, #ffacbd 100%); --pink-soft: #fff0f3; --text-dark: #4a4a4a; }
+        :root { --pink-main: #ff85a2; --pink-gradient: linear-gradient(135deg, #ff85a2 0%, #ffacbd 100%); --pink-soft: #fff5f7; --text-dark: #4a4a4a; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
         body { background: linear-gradient(135deg, #fbb1bd 0%, #ffeaee 100%); min-height: 100vh; display: flex; justify-content: center; padding: 20px 15px; color: var(--text-dark); }
-        .container { width: 100%; max-width: 450px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 25px; border-radius: 40px; box-shadow: 0 20px 40px rgba(255, 133, 162, 0.2); }
         
-        /* HEADER BARU */
+        .container { width: 100%; max-width: 450px; background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(15px); padding: 30px; border-radius: 45px; box-shadow: 0 25px 50px rgba(255, 133, 162, 0.25); border: 1px solid white; }
+        
         header { text-align: center; margin-bottom: 25px; }
-        header h1 { font-size: 28px; background: var(--pink-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; line-height: 1.2; }
-        header p { font-size: 13px; color: #aaa; font-weight: 700; letter-spacing: 0.5px; margin-top: -2px; }
+        header h1 { font-size: 28px; background: var(--pink-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; }
+        header p { font-size: 12px; color: #bbb; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
 
-        .welcome-box { background: #fff; padding: 20px; border-radius: 25px; margin-bottom: 20px; border: 1px solid var(--pink-soft); }
-        .mood-box { display: flex; gap: 8px; margin-top: 10px; font-size: 20px; }
-        .mood-btn { cursor: pointer; transition: 0.3s; opacity: 0.4; filter: grayscale(1); }
-        .mood-btn.active { opacity: 1; filter: grayscale(0); transform: scale(1.2); }
+        .welcome-box { background: white; padding: 20px; border-radius: 30px; margin-bottom: 20px; border: 1px solid var(--pink-soft); box-shadow: 0 10px 20px rgba(255, 133, 162, 0.05); }
+        .mood-box { display: flex; gap: 10px; margin-top: 12px; font-size: 22px; }
+        .mood-btn { cursor: pointer; transition: 0.3s; opacity: 0.3; filter: grayscale(1); }
+        .mood-btn.active { opacity: 1; filter: grayscale(0); transform: scale(1.25); }
         
-        .daily-snap-card { background: white; padding: 15px; border-radius: 30px; margin-bottom: 20px; }
-        .snap-preview { width: 100%; height: 200px; background: #fafafa; border-radius: 25px; overflow: hidden; margin-bottom: 12px; border: 2px dashed #ffcbd7; display: flex; align-items: center; justify-content: center; }
+        /* SNAP SECTION IMPROVED */
+        .daily-snap-card { background: white; padding: 18px; border-radius: 35px; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.03); border: 1px solid var(--pink-soft); }
+        .snap-preview { width: 100%; height: 240px; background: #fafafa; border-radius: 28px; overflow: hidden; margin-bottom: 12px; border: 2px dashed #ffcbd7; display: flex; align-items: center; justify-content: center; position: relative; }
         .snap-preview img { width: 100%; height: 100%; object-fit: cover; }
-        .snap-btn { background: var(--pink-gradient); color: white; padding: 12px; border-radius: 18px; border: none; font-weight: 800; cursor: pointer; width: 100%; box-shadow: 0 5px 15px rgba(255,133,162,0.2); }
         
-        .history-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 10px 0; scrollbar-width: none; }
-        .history-item { min-width: 55px; height: 55px; border-radius: 12px; overflow: hidden; border: 2px solid white; box-shadow: 0 4px 8px rgba(0,0,0,0.1); flex-shrink: 0; cursor: pointer; }
-        
-        .agenda-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-        .agenda-card { background: white; padding: 12px; border-radius: 20px; text-align: center; border: 1px solid var(--pink-soft); }
-        .val { font-size: 20px; font-weight: 900; color: var(--pink-main); }
-        .lbl { font-size: 10px; font-weight: 700; color: #ccc; }
+        .snap-btn-group { display: flex; gap: 8px; }
+        .snap-btn { background: var(--pink-gradient); color: white; padding: 12px; border-radius: 20px; border: none; font-weight: 800; cursor: pointer; flex: 3; box-shadow: 0 8px 15px rgba(255,133,162,0.2); transition: 0.3s; }
+        .del-snap-btn { background: #fff; color: #ff85a2; border: 2px solid #ffeaee; padding: 12px; border-radius: 20px; font-weight: 800; cursor: pointer; flex: 1; font-size: 14px; }
 
-        .input-group { background: white; padding: 15px; border-radius: 25px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px; }
-        input { padding: 12px; border: 2px solid #fff5f7; border-radius: 15px; outline: none; background: #fffafa; font-weight: 600; }
+        .history-title { font-size: 11px; font-weight: 800; color: #ccc; margin-top: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        .history-scroll { display: flex; gap: 12px; overflow-x: auto; padding: 10px 0; scrollbar-width: none; }
+        .history-item { min-width: 60px; height: 60px; border-radius: 50%; overflow: hidden; border: 3px solid white; box-shadow: 0 5px 12px rgba(0,0,0,0.1); flex-shrink: 0; cursor: pointer; transition: 0.3s; }
+        .history-item:hover { transform: scale(1.1); }
         
-        .task-card { background: white; padding: 15px; border-radius: 20px; display: flex; align-items: center; gap: 10px; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); border: 1px solid #fff; }
-        .check-circle { width: 22px; height: 22px; border: 2px solid var(--pink-soft); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 10px; color: transparent; }
-        .completed { opacity: 0.5; }
+        .agenda-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .agenda-card { background: white; padding: 15px; border-radius: 25px; text-align: center; border: 1.5px solid var(--pink-soft); }
+        .val { font-size: 22px; font-weight: 900; color: var(--pink-main); }
+        .lbl { font-size: 10px; font-weight: 800; color: #ccc; }
+
+        .input-group { background: white; padding: 18px; border-radius: 30px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.02); border: 1px solid var(--pink-soft); }
+        input { padding: 12px 15px; border: 2px solid #fff5f7; border-radius: 18px; outline: none; background: #fffafa; font-weight: 600; color: var(--text-dark); }
+        
+        .task-card { background: white; padding: 18px; border-radius: 25px; display: flex; align-items: center; gap: 12px; margin-bottom: 12px; box-shadow: 0 8px 15px rgba(0,0,0,0.02); border: 1px solid #fff; transition: 0.3s; }
+        .check-circle { width: 24px; height: 24px; border: 2.5px solid var(--pink-soft); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 11px; color: transparent; }
+        .completed { opacity: 0.55; background: #fafafa; }
         .completed .check-circle { background: var(--pink-main); color: white; border-color: var(--pink-main); }
         .completed .task-title { text-decoration: line-through; }
-        .btn-icon { width: 30px; height: 30px; border: none; border-radius: 8px; cursor: pointer; background: #f8f8f8; transition: 0.2s; }
-        .btn-icon:hover { background: var(--pink-soft); }
+        
+        .btn-icon { width: 34px; height: 34px; border: none; border-radius: 12px; cursor: pointer; background: #fcfcfc; font-size: 15px; transition: 0.2s; border: 1px solid #f0f0f0; }
+        .btn-icon:hover { background: var(--pink-soft); transform: translateY(-2px); }
     </style>
 </head>
 <body>
@@ -56,7 +63,7 @@
     
     <div class="welcome-box">
         <h2 id="greeting">Hi Meity!</h2>
-        <div id="quote-text" style="font-size: 11px; color: #aaa; margin-top: 3px;"></div>
+        <div id="quote-text" style="font-size: 12px; font-style: italic; color: #aaa; margin-top: 5px;">"Stay magic, stay productive."</div>
         <div class="mood-box" id="mood-container">
             <span class="mood-btn" onclick="setMood('😊')">😊</span>
             <span class="mood-btn" onclick="setMood('🌸')">🌸</span>
@@ -64,18 +71,22 @@
             <span class="mood-btn" onclick="setMood('🔥')">🔥</span>
             <span class="mood-btn" onclick="setMood('😴')">😴</span>
         </div>
-        <div style="width:100%; height:6px; background:#f0f0f0; border-radius:10px; margin-top:15px; overflow:hidden;">
-            <div id="progress-fill" style="width: 0%; height:100%; background:var(--pink-gradient); transition:0.8s;"></div>
+        <div style="width:100%; height:8px; background:#f0f0f0; border-radius:10px; margin-top:18px; overflow:hidden;">
+            <div id="progress-fill" style="width: 0%; height:100%; background:var(--pink-gradient); transition:1s cubic-bezier(0.175, 0.885, 0.32, 1.275);"></div>
         </div>
     </div>
 
     <div class="daily-snap-card">
         <div class="snap-preview" id="snap-preview">
             <img id="snap-img" style="display: none;">
-            <span id="placeholder-text" style="color:#ddd; font-weight:700; font-size:11px; letter-spacing:1px;">CAPTURE A MEMORY</span>
+            <span id="placeholder-text" style="color:#ddd; font-weight:800; font-size:12px; letter-spacing:1px;">CAPTURE A MOMENT</span>
         </div>
         <input type="file" accept="image/*" capture="camera" id="snap-input" style="display: none;">
-        <button class="snap-btn" onclick="document.getElementById('snap-input').click()">📸 Take a Snap</button>
+        <div class="snap-btn-group">
+            <button class="snap-btn" onclick="document.getElementById('snap-input').click()">📸 Take a Snap</button>
+            <button class="del-snap-btn" onclick="deleteSnap()">🗑️</button>
+        </div>
+        <div class="history-title">Memory Lane</div>
         <div class="history-scroll" id="history-scroll"></div>
     </div>
 
@@ -85,7 +96,7 @@
     </div>
 
     <div class="input-group">
-        <input type="text" id="taskInput" placeholder="What needs to be done?">
+        <input type="text" id="taskInput" placeholder="Add something to do...">
         <input type="date" id="dateInput">
         <button class="snap-btn" id="addBtn" style="padding: 10px;">Add to List 🎀</button>
     </div>
@@ -111,7 +122,7 @@
     const snapsCol = collection(db, "daily_snaps");
     const todayStr = new Date().toISOString().split('T')[0];
 
-    // Mood Logic
+    // Mood & UI logic
     window.setMood = async (emoji) => {
         await setDoc(doc(db, "moods", todayStr), { mood: emoji });
         renderMood(emoji);
@@ -129,27 +140,25 @@
     }
     loadMood();
 
-    // Greeting
     const hr = new Date().getHours();
     document.getElementById('greeting').innerText = hr < 12 ? "Good Morning, Meity! ☀️" : hr < 17 ? "Good Afternoon, Meity! 🌤️" : "Good Evening, Meity! ✨";
-    document.getElementById('quote-text').innerText = "Make today amazing. 🌸";
     document.getElementById('dateInput').valueAsDate = new Date();
 
-    // Tasks
+    // Tasks & Selebrasi
     onSnapshot(query(tasksCol, orderBy("createdAt", "desc")), (snap) => {
         const list = document.getElementById('taskList'); list.innerHTML = '';
-        let total = 0, done = 0, today = 0;
+        let total = 0, done = 0, todayCount = 0;
         snap.forEach(d => {
             const t = d.data(); total++;
             if(t.completed) done++;
-            if(t.date === todayStr && !t.completed) today++;
+            if(t.date === todayStr && !t.completed) todayCount++;
             const card = document.createElement('div');
             card.className = `task-card ${t.completed ? 'completed' : ''}`;
             card.innerHTML = `
                 <div class="check-circle" onclick="handleToggle('${d.id}', ${t.completed})">✔</div>
                 <div style="flex:1">
-                    <div class="task-title" style="font-weight:700;font-size:14px">${t.text}</div>
-                    <div style="font-size:10px;color:var(--pink-main);font-weight:700;">${t.date}</div>
+                    <div class="task-title" style="font-weight:800;font-size:14px">${t.text}</div>
+                    <div style="font-size:10px;color:var(--pink-main);font-weight:800;">${t.date}</div>
                 </div>
                 <div style="display:flex; gap:8px">
                     <button class="btn-icon" onclick="editT('${d.id}', '${t.text}', '${t.date}')">✏️</button>
@@ -158,16 +167,16 @@
             list.appendChild(card);
         });
         document.getElementById('count-total').innerText = total;
-        document.getElementById('count-today').innerText = today;
+        document.getElementById('count-today').innerText = todayCount;
         document.getElementById('progress-fill').style.width = total > 0 ? (done/total*100)+'%' : '0%';
     });
 
     window.handleToggle = (id, s) => {
-        if(!s) confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#ff85a2', '#ffacbd'] });
+        if(!s) confetti({ particleCount: 120, spread: 80, origin: { y: 0.7 }, colors: ['#ff85a2', '#ffacbd', '#fff'] });
         updateDoc(doc(db, "todo_meity", id), { completed: !s });
     };
 
-    window.delT = (id) => confirm('Delete?') && deleteDoc(doc(db, "todo_meity", id));
+    window.delT = (id) => confirm('Hapus tugas ini?') && deleteDoc(doc(db, "todo_meity", id));
     window.editT = async (id, oldT, oldD) => {
         const newT = prompt("Edit Task:", oldT);
         const newD = prompt("Edit Date:", oldD);
@@ -180,24 +189,39 @@
         t.value = '';
     };
 
-    // Snaps History
+    // SNAPS & DELETE SNAP LOGIC
     async function updateSnaps() {
         const snapDocs = await getDocs(query(snapsCol, orderBy("timestamp", "desc")));
         const scroll = document.getElementById('history-scroll'); scroll.innerHTML = '';
+        let foundToday = false;
+        
         snapDocs.forEach(d => {
             const data = d.data();
             if(d.id === todayStr) {
                 document.getElementById('snap-img').src = data.img;
                 document.getElementById('snap-img').style.display = 'block';
                 document.getElementById('placeholder-text').style.display = 'none';
+                foundToday = true;
             }
             const item = document.createElement('div');
             item.className = 'history-item';
             item.innerHTML = `<img src="${data.img}" style="width:100%;height:100%;object-fit:cover" onclick="document.getElementById('snap-img').src='${data.img}'; document.getElementById('snap-img').style.display='block'; document.getElementById('placeholder-text').style.display='none';">`;
             scroll.appendChild(item);
         });
+
+        if(!foundToday) {
+            document.getElementById('snap-img').style.display = 'none';
+            document.getElementById('placeholder-text').style.display = 'block';
+        }
     }
     updateSnaps();
+
+    window.deleteSnap = async () => {
+        if(confirm('Hapus foto hari ini?')) {
+            await deleteDoc(doc(db, "daily_snaps", todayStr));
+            updateSnaps();
+        }
+    };
 
     document.getElementById('snap-input').onchange = (e) => {
         const file = e.target.files[0];
@@ -207,15 +231,16 @@
             img.onload = () => {
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
-                const scale = Math.min(600/img.width, 600/img.height);
+                const scale = Math.min(800/img.width, 800/img.height);
                 canvas.width = img.width * scale; canvas.height = img.height * scale;
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                 
-                // Aesthetic Timestamp
-                ctx.font = 'bold 22px Quicksand'; ctx.fillStyle = 'rgba(255,255,255,0.9)';
+                // Timestamp Estetik
+                ctx.font = 'bold 24px Quicksand'; ctx.fillStyle = 'rgba(255,255,255,0.9)';
+                ctx.shadowColor = "rgba(0,0,0,0.5)"; ctx.shadowBlur = 6;
                 ctx.fillText(new Date().toLocaleDateString('en-GB'), 20, canvas.height - 20);
                 
-                const base64 = canvas.toDataURL('image/jpeg', 0.6);
+                const base64 = canvas.toDataURL('image/jpeg', 0.7);
                 setDoc(doc(db, "daily_snaps", todayStr), { img: base64, timestamp: Date.now() }).then(updateSnaps);
             };
             img.src = event.target.result;
