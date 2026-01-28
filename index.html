@@ -3,178 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo Pro Meity ?</title>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <title>Todo Pro Meity ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        :root { 
-            --pink-main: #ff85a2; 
-            --pink-gradient: linear-gradient(135deg, #ff85a2 0%, #ffacbd 100%); 
-            --pink-soft: #fff5f7; 
-            --text-dark: #4a4a4a; 
-        }
-
+        :root { --pink: #ff85a2; --soft-pink: #fff5f7; --text: #4a4a4a; }
+        
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
-
+        
         body { 
-            background: linear-gradient(135deg, #fbb1bd 0%, #ffeaee 100%); 
-            min-height: 100vh; 
-            display: flex; justify-content: center; 
-            padding: 20px 15px; color: var(--text-dark); 
-            overflow-x: hidden;
+            background: #fffafa; 
+            min-height: 100vh; display: flex; justify-content: center; 
+            padding: 20px; color: var(--text); 
         }
 
-        /* Floating Decoration */
-        body::before { content: '??'; position: absolute; top: 5%; left: 5%; font-size: 24px; opacity: 0.4; animation: float 6s infinite ease-in-out; }
-        body::after { content: '?'; position: absolute; bottom: 10%; right: 5%; font-size: 20px; opacity: 0.5; animation: float 8s infinite ease-in-out reverse; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        /* Dekorasi Sakura di Pojok */
+        body::before { content: '🌸'; position: fixed; top: 10%; left: 5%; font-size: 30px; opacity: 0.2; }
+        body::after { content: '🌸'; position: fixed; bottom: 10%; right: 5%; font-size: 25px; opacity: 0.2; }
 
         .container { 
-            width: 100%; max-width: 450px; 
-            background: rgba(255, 255, 255, 0.9); 
-            backdrop-filter: blur(20px); 
-            padding: 30px; border-radius: 50px; 
-            box-shadow: 0 25px 50px rgba(255, 133, 162, 0.3); 
-            border: 2px solid white;
-            position: relative;
+            width: 100%; max-width: 420px; 
+            background: white; padding: 30px; border-radius: 40px; 
+            box-shadow: 0 20px 40px rgba(255, 133, 162, 0.15);
+            border: 1px solid #ffeaee;
         }
 
-        header { text-align: center; margin-bottom: 30px; }
-        header h1 { font-size: 30px; background: var(--pink-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; }
-        header p { font-size: 13px; color: #aaa; font-weight: 700; letter-spacing: 1px; }
+        header { text-align: center; margin-bottom: 25px; }
+        header h1 { font-size: 28px; color: var(--pink); font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        header p { font-size: 13px; color: #bbb; font-weight: 700; margin-top: 5px; }
 
         .welcome-box { 
-            background: rgba(255, 255, 255, 0.8); 
-            padding: 22px; border-radius: 35px; margin-bottom: 25px; 
-            border: 1.5px solid var(--pink-soft); 
-            box-shadow: 0 10px 20px rgba(255, 133, 162, 0.05);
+            background: white; padding: 20px; border-radius: 25px; margin-bottom: 25px; 
+            border: 1.5px solid var(--soft-pink);
         }
-        .welcome-box h2 { font-size: 19px; color: var(--pink-main); margin-bottom: 4px; }
+        .welcome-box h2 { font-size: 18px; color: var(--pink); margin-bottom: 5px; }
+        .quote { font-size: 12px; color: #aaa; font-style: italic; margin-bottom: 15px; }
+
+        .progress-bar { width: 100%; height: 8px; background: #f0f0f0; border-radius: 10px; overflow: hidden; }
+        .progress-fill { width: 0%; height: 100%; background: var(--pink); transition: 0.8s; }
+
+        /* DAILY SNAP SECTION */
+        .snap-card { margin-top: 25px; margin-bottom: 25px; text-align: center; }
+        .snap-display { 
+            width: 100%; height: 230px; background: #fafafa; 
+            border-radius: 30px; overflow: hidden; border: 2px dashed #ffcbd7;
+            display: flex; align-items: center; justify-content: center; position: relative;
+        }
+        .snap-display img { width: 100%; height: 100%; object-fit: cover; }
         
-        /* MOOD SELECTOR */
-        .mood-box { display: flex; gap: 12px; margin-top: 15px; }
-        .mood-btn { 
-            cursor: pointer; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            font-size: 24px; filter: grayscale(1); opacity: 0.3;
-        }
-        .mood-btn.active { filter: grayscale(0); opacity: 1; transform: scale(1.3); }
+        .btn-group { display: flex; gap: 10px; margin-top: 15px; }
+        .btn-snap { background: var(--pink); color: white; padding: 12px; border-radius: 18px; border: none; font-weight: 800; flex: 1; cursor: pointer; box-shadow: 0 8px 15px rgba(255,133,162,0.2); }
+        .btn-del { background: #f5f5f5; color: #888; padding: 12px; border-radius: 18px; border: none; width: 60px; cursor: pointer; font-weight: 700; }
 
-        /* DAILY SNAP - THE DECORATED VERSION */
-        .daily-snap-card { margin-bottom: 30px; }
-        .snap-preview { 
-            width: 100%; height: 250px; background: #fff; border-radius: 40px; 
-            overflow: hidden; margin-bottom: 15px; border: 3px solid white; 
-            box-shadow: 0 15px 30px rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center; position: relative;
-        }
-        .snap-preview img { width: 100%; height: 100%; object-fit: cover; }
+        .history-title { font-size: 11px; color: #ccc; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; text-align: left; padding-left: 5px; }
+        .history-scroll { display: flex; gap: 12px; overflow-x: auto; padding: 5px 0; scrollbar-width: none; }
+        .hist-item { min-width: 60px; height: 60px; border-radius: 50%; border: 3px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.08); overflow: hidden; flex-shrink: 0; cursor: pointer; }
+
+        .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        .stat-card { background: #fffcfd; padding: 15px; border-radius: 20px; text-align: center; border: 1px solid #fff0f3; }
         
-        .btn-main { 
-            background: var(--pink-gradient); color: white; padding: 14px; 
-            border-radius: 22px; border: none; font-weight: 800; cursor: pointer; 
-            width: 100%; box-shadow: 0 10px 20px rgba(255, 133, 162, 0.3); transition: 0.3s;
-        }
-        .btn-main:active { transform: scale(0.96); }
+        .input-box { background: white; padding: 20px; border-radius: 25px; margin-bottom: 25px; border: 1.5px solid var(--soft-pink); }
+        input { width: 100%; padding: 12px; border: 1.5px solid #fff5f7; border-radius: 15px; margin-bottom: 10px; outline: none; background: #fffafa; font-weight: 600; }
 
-        .history-section { margin-top: 20px; }
-        .history-title { font-size: 12px; font-weight: 800; color: #bbb; text-transform: uppercase; margin-bottom: 12px; padding-left: 5px; }
-        .history-scroll { display: flex; gap: 15px; overflow-x: auto; padding: 5px; scrollbar-width: none; }
-        .history-item { 
-            min-width: 65px; height: 65px; border-radius: 50%; overflow: hidden; 
-            border: 3px solid white; box-shadow: 0 8px 15px rgba(0,0,0,0.1); 
-            flex-shrink: 0; cursor: pointer; transition: 0.3s;
-        }
-
-        /* AGENDA CARDS */
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
-        .stat-card { 
-            background: white; padding: 18px; border-radius: 30px; text-align: center; 
-            border: 1.5px solid var(--pink-soft); box-shadow: 0 10px 20px rgba(0,0,0,0.02);
-        }
-        .val { font-size: 24px; font-weight: 900; color: var(--pink-main); display: block; }
-        .lbl { font-size: 10px; font-weight: 800; color: #ccc; text-transform: uppercase; }
-
-        /* INPUT GROUP */
-        .input-group { 
-            background: white; padding: 20px; border-radius: 35px; margin-bottom: 25px; 
-            display: flex; flex-direction: column; gap: 12px; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.02);
-        }
-        input { 
-            padding: 14px 20px; border: 2.5px solid #fff5f7; border-radius: 20px; 
-            outline: none; background: #fffafa; font-weight: 600; font-size: 14px;
-        }
-
-        /* TASK LIST */
-        .task-card { 
-            background: white; padding: 20px; border-radius: 30px; display: flex; align-items: center; gap: 15px; 
-            margin-bottom: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.03); border: 1.5px solid #fff; transition: 0.3s;
-        }
-        .check-circle { 
-            width: 26px; height: 26px; border: 3px solid var(--pink-soft); 
-            border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; 
-            font-size: 11px; color: transparent; transition: 0.3s;
-        }
-        .completed { opacity: 0.6; background: #fafafa; }
-        .completed .check-circle { background: var(--pink-main); color: white; border-color: var(--pink-main); }
-        .completed .task-title { text-decoration: line-through; }
-        
-        .actions { display: flex; gap: 10px; }
-        .btn-action { 
-            width: 36px; height: 36px; border: none; border-radius: 14px; 
-            cursor: pointer; background: #fdfdfd; font-size: 16px; 
-            transition: 0.2s; border: 1px solid #f0f0f0;
-        }
-        .btn-action:hover { background: var(--pink-soft); transform: translateY(-3px); }
+        .task { display: flex; align-items: center; gap: 12px; padding: 15px; background: white; border-radius: 20px; margin-bottom: 12px; border: 1px solid #fcfcfc; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
+        .circle { width: 24px; height: 24px; border: 2.5px solid var(--soft-pink); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 10px; color: transparent; }
+        .done { opacity: 0.5; }
+        .done .circle { background: var(--pink); border-color: var(--pink); color: white; }
+        .done b { text-decoration: line-through; }
+        .actions { margin-left: auto; display: flex; gap: 10px; }
+        .icon-btn { border: none; background: none; cursor: pointer; font-size: 16px; opacity: 0.6; }
     </style>
 </head>
 <body>
 <div class="container">
     <header>
-        <h1>Todo Pro App ??</h1>
+        <h1>Todo Pro App 🌸</h1>
         <p>Organize your day better</p>
     </header>
-    
+
     <div class="welcome-box">
-        <h2 id="greeting">Loading...</h2>
-        <div id="quote-text" style="font-size: 12px; font-style: italic; color: #aaa;">"Every moment matters."</div>
-        <div class="mood-box" id="mood-container">
-            <span class="mood-btn" onclick="setMood('??')">??</span>
-            <span class="mood-btn" onclick="setMood('??')">??</span>
-            <span class="mood-btn" onclick="setMood('?')">?</span>
-            <span class="mood-btn" onclick="setMood('??')">??</span>
-            <span class="mood-btn" onclick="setMood('??')">??</span>
-        </div>
-        <div style="width:100%; height:8px; background:#f5f5f5; border-radius:10px; margin-top:20px; overflow:hidden;">
-            <div id="progress-fill" style="width: 0%; height:100%; background:var(--pink-gradient); transition:1s ease-out;"></div>
-        </div>
+        <h2 id="greeting">Hello, Meity! 🌸</h2>
+        <div class="quote">"Every moment matters."</div>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
     </div>
 
-    <div class="daily-snap-card">
-        <div class="snap-preview" id="snap-preview">
+    <div class="snap-card">
+        <div class="snap-display" id="snap-preview">
             <img id="snap-img" style="display: none;">
-            <span id="placeholder-text" style="color:#ddd; font-weight:800; font-size:12px; letter-spacing:1px;">CAPTURE A SNAP ??</span>
+            <span style="color:#ddd; font-weight:800; font-size:11px; letter-spacing:1px;">CAPTURE A SNAP 📸</span>
         </div>
-        <input type="file" accept="image/*" capture="camera" id="snap-input" style="display: none;">
-        <div style="display:flex; gap:10px;">
-            <button class="btn-main" onclick="document.getElementById('snap-input').click()">Take a Snap ?</button>
-            <button class="btn-action" onclick="deleteSnap()" style="width: 60px; border-radius: 22px;">???</button>
+        <input type="file" accept="image/*" capture="camera" id="file-in" style="display: none;">
+        <div class="btn-group">
+            <button class="btn-snap" onclick="document.getElementById('file-in').click()">Take a Snap 📸</button>
+            <button class="btn-del" onclick="deleteSnap()">🗑️</button>
         </div>
-        
-        <div class="history-section">
-            <div class="history-title">Memory History</div>
-            <div class="history-scroll" id="history-scroll"></div>
-        </div>
+        <div class="history-title" style="margin-top:20px;">Memory Lane</div>
+        <div class="history-scroll" id="history-list"></div>
     </div>
 
-    <div class="stats-grid">
-        <div class="stat-card"><span class="val" id="count-today">0</span><span class="lbl">TODAY</span></div>
-        <div class="stat-card"><span class="val" id="count-total">0</span><span class="lbl">TOTAL</span></div>
+    <div class="stats">
+        <div class="stat-card"><b style="color:var(--pink); font-size:20px;" id="c-today">0</b><br><small style="color:#ccc; font-weight:800;">TODAY</small></div>
+        <div class="stat-card"><b style="color:var(--pink); font-size:20px;" id="c-total">0</b><br><small style="color:#ccc; font-weight:800;">TOTAL</small></div>
     </div>
 
-    <div class="input-group">
-        <input type="text" id="taskInput" placeholder="What's your plan, Meity?">
-        <input type="date" id="dateInput">
-        <button class="btn-main" id="addBtn" style="padding: 10px;">Add Plan ??</button>
+    <div class="input-box">
+        <input type="text" id="t-in" placeholder="What's your plan?">
+        <input type="date" id="d-in">
+        <button class="btn-snap" style="width:100%" id="add-btn">Add to List 🎀</button>
     </div>
     
     <div id="taskList"></div>
@@ -182,7 +117,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, updateDoc, setDoc, getDocs, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, updateDoc, setDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBWeo6KAo6GsKHusxDGJB8kp_03-jB944w",
@@ -195,135 +130,95 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const tasksCol = collection(db, "todo_meity");
-    const snapsCol = collection(db, "daily_snaps");
-    const todayStr = new Date().toISOString().split('T')[0];
+    const tCol = collection(db, "todo_meity");
+    const sCol = collection(db, "daily_snaps");
+    const today = new Date().toISOString().split('T')[0];
 
-    // Mood & UI Logic
-    window.setMood = async (emoji) => {
-        await setDoc(doc(db, "moods", todayStr), { mood: emoji });
-        renderMood(emoji);
-    };
-
-    function renderMood(emoji) {
-        document.querySelectorAll('.mood-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.innerText === emoji);
-        });
-    }
-
-    async function loadMood() {
-        const d = await getDoc(doc(db, "moods", todayStr));
-        if(d.exists()) renderMood(d.data().mood);
-    }
-    loadMood();
+    document.getElementById('d-in').valueAsDate = new Date();
 
     const hr = new Date().getHours();
-    document.getElementById('greeting').innerText = hr < 12 ? "Good Morning, Meity! ???" : hr < 17 ? "Good Afternoon, Meity! ??" : "Good Evening, Meity! ?";
-    document.getElementById('dateInput').valueAsDate = new Date();
+    document.getElementById('greeting').innerText = hr < 12 ? "Good Morning, Meity! 🌤️" : hr < 17 ? "Good Afternoon, Meity! 🌸" : "Good Evening, Meity! ✨";
 
-    // Tasks & Selebrasi
-    onSnapshot(query(tasksCol, orderBy("createdAt", "desc")), (snap) => {
+    onSnapshot(query(tCol, orderBy("createdAt", "desc")), (snap) => {
         const list = document.getElementById('taskList'); list.innerHTML = '';
-        let total = 0, done = 0, todayCount = 0;
+        let total = 0, todayCount = 0, doneCount = 0;
         snap.forEach(d => {
             const t = d.data(); total++;
-            if(t.completed) done++;
-            if(t.date === todayStr && !t.completed) todayCount++;
-            const card = document.createElement('div');
-            card.className = `task-card ${t.completed ? 'completed' : ''}`;
-            card.innerHTML = `
-                <div class="check-circle" onclick="handleToggle('${d.id}', ${t.completed})">?</div>
-                <div style="flex:1">
-                    <div class="task-title" style="font-weight:800;font-size:15px">${t.text}</div>
-                    <div style="font-size:10px;color:var(--pink-main);font-weight:800;margin-top:2px">${t.date}</div>
-                </div>
+            if(t.completed) doneCount++;
+            if(t.date === today && !t.completed) todayCount++;
+            const div = document.createElement('div');
+            div.className = `task ${t.completed ? 'done' : ''}`;
+            div.innerHTML = `
+                <div class="circle" onclick="toggle('${d.id}', ${t.completed})">✔</div>
+                <div style="flex:1"><b>${t.text}</b><br><small style="color:var(--pink); font-weight:700;">${t.date}</small></div>
                 <div class="actions">
-                    <button class="btn-action" onclick="editT('${d.id}', '${t.text}', '${t.date}')">??</button>
-                    <button class="btn-action" onclick="delT('${d.id}')">???</button>
+                    <button class="icon-btn" onclick="editT('${d.id}','${t.text}','${t.date}')">✏️</button>
+                    <button class="icon-btn" onclick="delT('${d.id}')">🗑️</button>
                 </div>`;
-            list.appendChild(card);
+            list.appendChild(div);
         });
-        document.getElementById('count-total').innerText = total;
-        document.getElementById('count-today').innerText = todayCount;
-        document.getElementById('progress-fill').style.width = total > 0 ? (done/total*100)+'%' : '0%';
+        document.getElementById('c-total').innerText = total;
+        document.getElementById('c-today').innerText = todayCount;
+        document.getElementById('progress-fill').style.width = total > 0 ? (doneCount/total*100)+'%' : '0%';
     });
 
-    window.handleToggle = (id, s) => {
-        if(!s) confetti({ particleCount: 150, spread: 80, origin: { y: 0.7 }, colors: ['#ff85a2', '#ffacbd', '#ffffff'] });
+    window.toggle = (id, s) => {
+        if(!s) confetti({ particleCount: 70, spread: 70, origin: { y: 0.8 }, colors: ['#ff85a2', '#ffffff'] });
         updateDoc(doc(db, "todo_meity", id), { completed: !s });
     };
-
-    window.delT = (id) => confirm('Hapus rencana ini?') && deleteDoc(doc(db, "todo_meity", id));
-    
+    window.delT = (id) => confirm('Hapus tugas?') && deleteDoc(doc(db, "todo_meity", id));
     window.editT = async (id, oldT, oldD) => {
-        const newT = prompt("Edit Task:", oldT);
-        const newD = prompt("Edit Date:", oldD);
-        if(newT && newD) await updateDoc(doc(db, "todo_meity", id), { text: newT, date: newD });
+        const nT = prompt("Edit Task:", oldT); const nD = prompt("Edit Date:", oldD);
+        if(nT && nD) await updateDoc(doc(db, "todo_meity", id), { text: nT, date: nD });
     };
 
-    document.getElementById('addBtn').onclick = async () => {
-        const t = document.getElementById('taskInput');
-        if(t.value) await addDoc(tasksCol, { text: t.value, date: document.getElementById('dateInput').value, completed: false, createdAt: Date.now() });
-        t.value = '';
+    document.getElementById('add-btn').onclick = async () => {
+        const v = document.getElementById('t-in');
+        if(v.value) await addDoc(tCol, { text: v.value, date: document.getElementById('d-in').value, completed: false, createdAt: Date.now() });
+        v.value = '';
     };
 
-    // SNAPS & HISTORY
     async function updateSnaps() {
-        const snapDocs = await getDocs(query(snapsCol, orderBy("timestamp", "desc")));
-        const scroll = document.getElementById('history-scroll'); scroll.innerHTML = '';
-        let foundToday = false;
-        
+        const snapDocs = await getDocs(query(sCol, orderBy("timestamp", "desc")));
+        const scroll = document.getElementById('history-list'); scroll.innerHTML = '';
+        let found = false;
         snapDocs.forEach(d => {
             const data = d.data();
-            if(d.id === todayStr) {
+            if(d.id === today) {
                 document.getElementById('snap-img').src = data.img;
                 document.getElementById('snap-img').style.display = 'block';
-                document.getElementById('placeholder-text').style.display = 'none';
-                foundToday = true;
+                found = true;
             }
             const item = document.createElement('div');
-            item.className = 'history-item';
-            item.innerHTML = `<img src="${data.img}" style="width:100%;height:100%;object-fit:cover" onclick="document.getElementById('snap-img').src='${data.img}'; document.getElementById('snap-img').style.display='block'; document.getElementById('placeholder-text').style.display='none';">`;
+            item.className = 'hist-item';
+            item.innerHTML = `<img src="${data.img}" style="width:100%;height:100%;object-fit:cover" onclick="document.getElementById('snap-img').src='${data.img}'; document.getElementById('snap-img').style.display='block';">`;
             scroll.appendChild(item);
         });
-
-        if(!foundToday) {
-            document.getElementById('snap-img').style.display = 'none';
-            document.getElementById('placeholder-text').style.display = 'block';
-        }
+        if(!found) document.getElementById('snap-img').style.display = 'none';
     }
     updateSnaps();
 
     window.deleteSnap = async () => {
-        if(confirm('Hapus foto hari ini?')) {
-            await deleteDoc(doc(db, "daily_snaps", todayStr));
-            updateSnaps();
-        }
+        if(confirm('Hapus foto?')) { await deleteDoc(doc(db, "daily_snaps", today)); updateSnaps(); }
     };
 
-    document.getElementById('snap-input').onchange = (e) => {
-        const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.onload = (event) => {
+    document.getElementById('file-in').onchange = (e) => {
+        const r = new FileReader();
+        r.onload = (ev) => {
             const img = new Image();
             img.onload = () => {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
+                const cv = document.createElement('canvas'); const ctx = cv.getContext('2d');
                 const scale = Math.min(800/img.width, 800/img.height);
-                canvas.width = img.width * scale; canvas.height = img.height * scale;
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                
-                // Timestamp
-                ctx.font = 'bold 24px Quicksand'; ctx.fillStyle = 'rgba(255,255,255,0.9)';
-                ctx.shadowColor = "rgba(0,0,0,0.6)"; ctx.shadowBlur = 8;
-                ctx.fillText(new Date().toLocaleDateString('en-GB'), 20, canvas.height - 20);
-                
-                const base64 = canvas.toDataURL('image/jpeg', 0.6);
-                setDoc(doc(db, "daily_snaps", todayStr), { img: base64, timestamp: Date.now() }).then(updateSnaps);
+                cv.width = img.width * scale; cv.height = img.height * scale;
+                ctx.drawImage(img, 0, 0, cv.width, cv.height);
+                ctx.font = 'bold 24px Quicksand'; ctx.fillStyle = 'rgba(255,255,255,0.8)';
+                ctx.fillText(new Date().toLocaleDateString(), 20, cv.height - 20);
+                const b64 = cv.toDataURL('image/jpeg', 0.6);
+                setDoc(doc(db, "daily_snaps", today), { img: b64, timestamp: Date.now() }).then(updateSnaps);
             };
-            img.src = event.target.result;
+            img.src = ev.target.result;
         };
-        reader.readAsDataURL(file);
+        r.readAsDataURL(e.target.files[0]);
     };
 </script>
 </body>
