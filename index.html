@@ -3,57 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo Pro Meity ✨</title>
+    <title>Todo Pro Meity ?</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root { --pink: #ff85a2; --soft-pink: #fff5f7; --text: #4a4a4a; }
-        
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
         
-        body { 
-            background: #fffafa; 
-            min-height: 100vh; display: flex; justify-content: center; 
-            padding: 20px; color: var(--text); 
-        }
+        body { background: #fffafa; min-height: 100vh; display: flex; justify-content: center; padding: 20px; color: var(--text); }
+        body::before { content: '??'; position: fixed; top: 10%; left: 5%; font-size: 30px; opacity: 0.2; }
+        body::after { content: '??'; position: fixed; bottom: 10%; right: 5%; font-size: 25px; opacity: 0.2; }
 
-        /* Dekorasi Sakura di Pojok */
-        body::before { content: '🌸'; position: fixed; top: 10%; left: 5%; font-size: 30px; opacity: 0.2; }
-        body::after { content: '🌸'; position: fixed; bottom: 10%; right: 5%; font-size: 25px; opacity: 0.2; }
-
-        .container { 
-            width: 100%; max-width: 420px; 
-            background: white; padding: 30px; border-radius: 40px; 
-            box-shadow: 0 20px 40px rgba(255, 133, 162, 0.15);
-            border: 1px solid #ffeaee;
-        }
-
+        .container { width: 100%; max-width: 420px; background: white; padding: 30px; border-radius: 40px; box-shadow: 0 20px 40px rgba(255, 133, 162, 0.15); border: 1px solid #ffeaee; position: relative; }
         header { text-align: center; margin-bottom: 25px; }
-        header h1 { font-size: 28px; color: var(--pink); font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        header h1 { font-size: 28px; color: var(--pink); font-weight: 800; }
         header p { font-size: 13px; color: #bbb; font-weight: 700; margin-top: 5px; }
 
-        .welcome-box { 
-            background: white; padding: 20px; border-radius: 25px; margin-bottom: 25px; 
-            border: 1.5px solid var(--soft-pink);
-        }
+        .welcome-box { background: white; padding: 20px; border-radius: 25px; margin-bottom: 25px; border: 1.5px solid var(--soft-pink); }
         .welcome-box h2 { font-size: 18px; color: var(--pink); margin-bottom: 5px; }
         .quote { font-size: 12px; color: #aaa; font-style: italic; margin-bottom: 15px; }
-
         .progress-bar { width: 100%; height: 8px; background: #f0f0f0; border-radius: 10px; overflow: hidden; }
         .progress-fill { width: 0%; height: 100%; background: var(--pink); transition: 0.8s; }
 
-        /* DAILY SNAP SECTION */
         .snap-card { margin-top: 25px; margin-bottom: 25px; text-align: center; }
-        .snap-display { 
-            width: 100%; height: 230px; background: #fafafa; 
-            border-radius: 30px; overflow: hidden; border: 2px dashed #ffcbd7;
-            display: flex; align-items: center; justify-content: center; position: relative;
-        }
+        .snap-display { width: 100%; height: 230px; background: #fafafa; border-radius: 30px; overflow: hidden; border: 2px dashed #ffcbd7; display: flex; align-items: center; justify-content: center; }
         .snap-display img { width: 100%; height: 100%; object-fit: cover; }
         
         .btn-group { display: flex; gap: 10px; margin-top: 15px; }
         .btn-snap { background: var(--pink); color: white; padding: 12px; border-radius: 18px; border: none; font-weight: 800; flex: 1; cursor: pointer; box-shadow: 0 8px 15px rgba(255,133,162,0.2); }
-        .btn-del { background: #f5f5f5; color: #888; padding: 12px; border-radius: 18px; border: none; width: 60px; cursor: pointer; font-weight: 700; }
+        .btn-del { background: #f5f5f5; color: #888; padding: 12px; border-radius: 18px; border: none; width: 60px; cursor: pointer; }
 
         .history-title { font-size: 11px; color: #ccc; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; text-align: left; padding-left: 5px; }
         .history-scroll { display: flex; gap: 12px; overflow-x: auto; padding: 5px 0; scrollbar-width: none; }
@@ -72,17 +50,21 @@
         .done b { text-decoration: line-through; }
         .actions { margin-left: auto; display: flex; gap: 10px; }
         .icon-btn { border: none; background: none; cursor: pointer; font-size: 16px; opacity: 0.6; }
+
+        .reset-container { text-align: center; margin-top: 30px; border-top: 1px dashed #ffe0e5; padding-top: 20px; }
+        .btn-reset-all { background: none; border: none; color: #ffb3c6; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: 0.2s; }
+        .btn-reset-all:hover { color: #ff4d6d; }
     </style>
 </head>
 <body>
 <div class="container">
     <header>
-        <h1>Todo Pro App 🌸</h1>
+        <h1>Todo Pro App ??</h1>
         <p>Organize your day better</p>
     </header>
 
     <div class="welcome-box">
-        <h2 id="greeting">Hello, Meity! 🌸</h2>
+        <h2 id="greeting">Hello, Meity! ??</h2>
         <div class="quote">"Every moment matters."</div>
         <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
     </div>
@@ -90,12 +72,12 @@
     <div class="snap-card">
         <div class="snap-display" id="snap-preview">
             <img id="snap-img" style="display: none;">
-            <span style="color:#ddd; font-weight:800; font-size:11px; letter-spacing:1px;">CAPTURE A SNAP 📸</span>
+            <span style="color:#ddd; font-weight:800; font-size:11px; letter-spacing:1px;">CAPTURE A SNAP ??</span>
         </div>
         <input type="file" accept="image/*" capture="camera" id="file-in" style="display: none;">
         <div class="btn-group">
-            <button class="btn-snap" onclick="document.getElementById('file-in').click()">Take a Snap 📸</button>
-            <button class="btn-del" onclick="deleteSnap()">🗑️</button>
+            <button class="btn-snap" onclick="document.getElementById('file-in').click()">Take a Snap ??</button>
+            <button class="btn-del" onclick="deleteSnap()">???</button>
         </div>
         <div class="history-title" style="margin-top:20px;">Memory Lane</div>
         <div class="history-scroll" id="history-list"></div>
@@ -109,10 +91,15 @@
     <div class="input-box">
         <input type="text" id="t-in" placeholder="What's your plan?">
         <input type="date" id="d-in">
-        <button class="btn-snap" style="width:100%" id="add-btn">Add to List 🎀</button>
+        <button class="btn-snap" style="width:100%" id="add-btn">Add to List ??</button>
     </div>
     
     <div id="taskList"></div>
+
+    <!-- TOMBOL RESET KANDANG SAKURA -->
+    <div class="reset-container">
+        <button class="btn-reset-all" onclick="resetAllData()">?? Reset All Data ??</button>
+    </div>
 </div>
 
 <script type="module">
@@ -135,10 +122,10 @@
     const today = new Date().toISOString().split('T')[0];
 
     document.getElementById('d-in').valueAsDate = new Date();
-
     const hr = new Date().getHours();
-    document.getElementById('greeting').innerText = hr < 12 ? "Good Morning, Meity! 🌤️" : hr < 17 ? "Good Afternoon, Meity! 🌸" : "Good Evening, Meity! ✨";
+    document.getElementById('greeting').innerText = hr < 12 ? "Good Morning, Meity! ???" : hr < 17 ? "Good Afternoon, Meity! ??" : "Good Evening, Meity! ?";
 
+    // Tasks
     onSnapshot(query(tCol, orderBy("createdAt", "desc")), (snap) => {
         const list = document.getElementById('taskList'); list.innerHTML = '';
         let total = 0, todayCount = 0, doneCount = 0;
@@ -149,11 +136,11 @@
             const div = document.createElement('div');
             div.className = `task ${t.completed ? 'done' : ''}`;
             div.innerHTML = `
-                <div class="circle" onclick="toggle('${d.id}', ${t.completed})">✔</div>
+                <div class="circle" onclick="toggle('${d.id}', ${t.completed})">?</div>
                 <div style="flex:1"><b>${t.text}</b><br><small style="color:var(--pink); font-weight:700;">${t.date}</small></div>
                 <div class="actions">
-                    <button class="icon-btn" onclick="editT('${d.id}','${t.text}','${t.date}')">✏️</button>
-                    <button class="icon-btn" onclick="delT('${d.id}')">🗑️</button>
+                    <button class="icon-btn" onclick="editT('${d.id}','${t.text}','${t.date}')">??</button>
+                    <button class="icon-btn" onclick="delT('${d.id}')">???</button>
                 </div>`;
             list.appendChild(div);
         });
@@ -178,6 +165,7 @@
         v.value = '';
     };
 
+    // Snaps
     async function updateSnaps() {
         const snapDocs = await getDocs(query(sCol, orderBy("timestamp", "desc")));
         const scroll = document.getElementById('history-list'); scroll.innerHTML = '';
@@ -199,7 +187,7 @@
     updateSnaps();
 
     window.deleteSnap = async () => {
-        if(confirm('Hapus foto?')) { await deleteDoc(doc(db, "daily_snaps", today)); updateSnaps(); }
+        if(confirm('Hapus foto hari ini?')) { await deleteDoc(doc(db, "daily_snaps", today)); updateSnaps(); }
     };
 
     document.getElementById('file-in').onchange = (e) => {
@@ -211,14 +199,40 @@
                 const scale = Math.min(800/img.width, 800/img.height);
                 cv.width = img.width * scale; cv.height = img.height * scale;
                 ctx.drawImage(img, 0, 0, cv.width, cv.height);
-                ctx.font = 'bold 24px Quicksand'; ctx.fillStyle = 'rgba(255,255,255,0.8)';
-                ctx.fillText(new Date().toLocaleDateString(), 20, cv.height - 20);
                 const b64 = cv.toDataURL('image/jpeg', 0.6);
                 setDoc(doc(db, "daily_snaps", today), { img: b64, timestamp: Date.now() }).then(updateSnaps);
             };
             img.src = ev.target.result;
         };
         r.readAsDataURL(e.target.files[0]);
+    };
+
+    // LOGIC AUTO-RESET MASSAL
+    window.resetAllData = async () => {
+        const conf1 = confirm("Meity serius mau hapus SEMUA data tugas & memory foto?");
+        if (!conf1) return;
+        
+        const conf2 = confirm("Beneran ya? Data yang dihapus di Firebase tidak bisa dikembalikan lagi lho.");
+        if (!conf2) return;
+
+        try {
+            // Hapus Tugas
+            const taskDocs = await getDocs(tCol);
+            const taskPromises = [];
+            taskDocs.forEach(d => taskPromises.push(deleteDoc(doc(db, "todo_meity", d.id))));
+            await Promise.all(taskPromises);
+
+            // Hapus Snaps Foto
+            const snapDocs = await getDocs(sCol);
+            const snapPromises = [];
+            snapDocs.forEach(d => snapPromises.push(deleteDoc(doc(db, "daily_snaps", d.id))));
+            await Promise.all(snapPromises);
+
+            alert("Semua data sukses dibersihkan! Aplikasi kembali seperti baru. ?");
+            window.location.reload();
+        } catch (error) {
+            alert("Waduh gagal reset: " + error.message);
+        }
     };
 </script>
 </body>
